@@ -5,7 +5,7 @@ import Sidebar from "@/components/shared/Sidebar";
 
 export function Home() {
   return (
-    <div className="flex flex-row text-center h-100">
+    <div className="flex flex-row ">
       <Sidebar />
       <div className="home">
         <div className="mb-12">
