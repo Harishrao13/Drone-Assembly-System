@@ -2,8 +2,14 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
+
 @layer base {
   :root {
+    --font-poppins: 'Poppins', sans-serif;
     background: linear-gradient(to right, #6d55cb, #c150c1);
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -51,11 +57,19 @@
 
 @layer utilities {
   .wrapper {
-    @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-dark-400 p-16-regular;
+    @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-black font-normal p-16-regular;
+  }
+
+  .root {
+    @apply flex min-h-screen;
+  }
+
+  .root-container {
+    @apply flex flex-col flex-grow flex-center;
   }
 
   .gradient-text {
-    @apply bg-purple-gradient bg-cover bg-clip-text text-transparent;
+    @apply bg-cover bg-clip-text text-transparent;
   }
 
   .flex-center {
@@ -123,11 +137,11 @@
   }
 
   .sidebar {
-    @apply h-screen w-72 bg-white p-5 shadow-md shadow-purple-200/50 lg:flex flex flex-col !important;
+    @apply h-screen max-w-72 bg-white shadow-md shadow-purple-200/50 lg:flex flex flex-col cursor-pointer p-18-semibold rounded-xl !important;
   }
 
   .sidebar-logo {
-    @apply flex items-center gap-2 md:py-2 !important;
+    @apply flex items-center gap-2 md:py-2 flex-center mt-4 !important;
   }
 
   .sidebar-nav {
@@ -135,19 +149,32 @@
   }
 
   .sidebar-nav_elements {
-    @apply hidden w-full flex-col items-start gap-2 md:flex !important;
+    @apply hidden w-full flex-col items-start gap-6 md:flex !important;
   }
 
   .sidebar-nav_element {
-    @apply p-16-semibold w-full flex-center whitespace-nowrap rounded-full bg-cover  transition-all hover:bg-purple-100 hover:shadow-inner !important;
+    @apply p-4 w-full flex items-center whitespace-nowrap rounded-full transition-all hover:bg-purple-600 hover:text-white !important;
+  }
+
+  .sidebar-nav_element:hover {
+    @apply bg-purple-600 text-white !important;
   }
 
   .sidebar-link {
     @apply p-16-semibold flex size-full gap-4 p-4 !important;
   }
 
+  /* Navbar Component */
+  .header {
+    @apply flex-between fixed h-16 w-full border-b-4 border-purple-100 bg-white p-5 lg:hidden !important;
+  }
+
+  .header-nav_elements {
+    @apply mt-8 flex w-full flex-col items-start gap-5;
+  }
+
   .home {
-    @apply p-12 bg-white rounded-lg shadow-md w-full max-w-xl mx-auto my-auto text-center;
+    @apply p-12 bg-white rounded-lg shadow-md w-full max-w-xl m-auto text-center;
   }
 
   .login {
@@ -159,6 +186,6 @@
   }
 
   .logo-container {
-    @apply mr-16; /* Adjust the margin as needed */
+    @apply mr-16;
   }
 }
