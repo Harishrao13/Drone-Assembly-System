@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../components/ui/input";
-import  RightArrow  from "@/assets/icons/right-arrow-2.svg"
+import  RightArrow  from "@/assets/icons/right-arrow.svg"
 import Layout from './layout';
 
 export function Home() {
