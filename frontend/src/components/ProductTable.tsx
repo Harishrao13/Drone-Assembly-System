@@ -17,7 +17,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ productFunction }) => {
   const products = productFunction();
 
   return (
-    <div className="bg-white rounded-lg flex flex-col justify-center w-full md:w-3/4 lg:w-1/2">
+    <div className="bg-white rounded-lg flex flex-col justify-center w-full md:w-2/3 lg:w-3/4 xl:w-4/5 2xl:w-3/4 p-5">
       <Table>
         <TableHeader>
           <TableRow>
@@ -26,7 +26,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ productFunction }) => {
             <TableHead>Product Code</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className='cursor-pointer'>
           {products.map((product, index) => (
             <TableRow key={index + 1}>
               <TableCell className="font-medium">{String(index + 1).padStart(2, '0')}</TableCell>

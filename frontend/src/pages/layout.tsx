@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <main className="root">
+    <main className="root ">
       {!isMobile && <Sidebar />}
       {isMobile && <MobileNav />}
       <div className="root-container">

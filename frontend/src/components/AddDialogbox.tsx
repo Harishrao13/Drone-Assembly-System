@@ -17,14 +17,11 @@ export function DialogBox(props: any) {
     <div>
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 ">+ Add New</Button>
+        <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6 ">+ Add New</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle>Add New Product</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription> */}
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
