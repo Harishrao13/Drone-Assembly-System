@@ -1,4 +1,5 @@
 const User = require("../models/users");
+const Product = require("../models/products");
 
 const getAllTasks = (req, res) => {
   res.send("Hello from Controller!");
@@ -35,8 +36,33 @@ const findUser = async (req, res) => {
   }
 };
 
+const createProduct = async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    console.log(product);
+    res.status(201).json({ product });
+  } catch (error) {
+    console.error('Error creating product:', error);
+    res.status(500).json({ msg: error.message || error });
+  }
+};
+
+const displayProduct = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    // console.log(products); 
+    res.status(200).json({ products });
+  } catch (error) {
+    console.error('Error displaying product:', error);
+    res.status(500).json({ msg: error.message || error });
+  }
+
+}
+
 module.exports = {
   getAllTasks,
   createUser,
   findUser,
+  createProduct,
+  displayProduct
 };

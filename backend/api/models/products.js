@@ -10,13 +10,14 @@ const PartSchema = new mongoose.Schema({
 const ComponentSchema = new mongoose.Schema({
   label: { type: String, required: true },
   code: { type: String, required: true },
-  partList: [PartSchema] // An array of parts
+  partList: [PartSchema]
 });
 
 // Schema for the product
 const ProductSchema = new mongoose.Schema({
-  productName: { type: String, required: true },
+  productName: { type: String, required: true, unique: true},
+  productCode: { type: String, required: true, unique: true},
   components: [ComponentSchema]
 });
 
-module.exports = mongoose.model('Products', ProductSchema);
+module.exports = mongoose.model('Product', ProductSchema);
