@@ -1,54 +1,40 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface DialogBoxProps {
-  onProductAdded: () => void;
+  onItemAdded: () => void;
+  defaultHolder: string;
+  handleSubmit: (e: any) => void;
+  ItemName: string;
 }
 
-export function DialogBox({ onProductAdded }: DialogBoxProps) {
-  const [productName, setProductName] = useState('');
-  const [productCode, setProductCode] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const handleSubmit = async (e: any) => {
+export function DialogBox( {defaultHolder, onItemAdded, handleSubmit, ItemName} : DialogBoxProps) {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    const product = { productName, productCode };
-    const response = await fetch('http://localhost:5000/api/v1/add-product', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(product),
-    });
-    if (response.ok) {
-      onProductAdded(); 
-      setOpen(false);
-      } else {
-        console.error('Error adding product');
-    }
-  };
+    await handleSubmit({name: itemName, code: itemCode});
+    onItemAdded();
+    setOpen(false);
+  }
+  const [itemName, setItemName] = useState("");
+  const [itemCode, setItemCode] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6">+ Add New</Button>
+          <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6">
+            + Add New
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-white">
           <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
+            <DialogTitle>Add New {ItemName}</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={onSubmit}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
@@ -56,10 +42,10 @@ export function DialogBox({ onProductAdded }: DialogBoxProps) {
                 </Label>
                 <Input
                   id="name"
-                  placeholder="Tejas-U"
+                  placeholder={defaultHolder}
                   className="col-span-3"
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -70,13 +56,15 @@ export function DialogBox({ onProductAdded }: DialogBoxProps) {
                   id="code"
                   placeholder="X"
                   className="col-span-3"
-                  value={productCode}
-                  onChange={(e) => setProductCode(e.target.value)}
+                  value={itemCode}
+                  onChange={(e) => setItemCode(e.target.value)}
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" className="bg-blue-700 hover:bg-blue-800">Save</Button>
+              <Button type="submit" className="bg-blue-700 hover:bg-blue-800">
+                Save
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
