@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Product } from '@/constants/index';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 interface ProductTableProps {
   productFunction: () => Product[];
@@ -32,6 +33,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ productFunction }) => {
               <TableCell className="font-medium">{String(index + 1).padStart(2, '0')}</TableCell>
               <TableCell>{product.label}</TableCell>
               <TableCell>{product.code}</TableCell>
+              <TableCell><BsThreeDotsVertical /></TableCell>
             </TableRow>
           ))}
         </TableBody>

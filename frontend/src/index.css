@@ -10,7 +10,7 @@
 @layer base {
   :root {
     --font-poppins: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #6d55cb, #c150c1);
+    background: linear-gradient(to right, #000000, #e3d9e3);
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -137,7 +137,7 @@
   }
 
   .sidebar {
-    @apply h-screen max-w-72 bg-white shadow-md shadow-purple-200/50 lg:flex flex flex-col cursor-pointer p-18-semibold rounded-xl !important;
+    @apply h-screen max-w-72 bg-white shadow-md shadow-gray-200/50 lg:flex flex flex-col cursor-pointer p-18-semibold rounded-xl !important;
   }
 
   .sidebar-logo {
@@ -157,7 +157,7 @@
   }
 
   .sidebar-nav_element:hover {
-    @apply bg-purple-600 text-white !important;
+    @apply bg-gray-600 text-white !important;
   }
 
   .sidebar-link {
