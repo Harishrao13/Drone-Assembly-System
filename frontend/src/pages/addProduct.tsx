@@ -1,15 +1,12 @@
-import Layout from './layout';
-import ProductTable from "@/components/ProductTable";
-import { productNames } from '@/constants/index';
-import { DialogBox } from '@/components/AddDialogbox';
+import Layout from "./layout"
+import ProductTable from "@/components/ProductTable"
 
-export function AddProduct() {
+const addProduct = () => {
   return (
     <Layout>
-    <div className='flex flex-center flex-col'>
-      <ProductTable productFunction={productNames}/>
-      <DialogBox />
-    </div>
+      <ProductTable />
     </Layout>
   )
-};
+}
+
+export default addProduct

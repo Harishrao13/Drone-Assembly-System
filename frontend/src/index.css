@@ -138,6 +138,7 @@
 
   .sidebar {
     @apply h-screen max-w-72 bg-white shadow-md shadow-gray-200/50 lg:flex flex flex-col cursor-pointer p-18-semibold rounded-xl !important;
+
   }
 
   .sidebar-logo {

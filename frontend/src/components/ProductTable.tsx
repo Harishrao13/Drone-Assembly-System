@@ -1,43 +1,75 @@
-import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Product } from '@/constants/index';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {DataTable} from './DataTable';
+import { DialogBox } from './Dialogbox';
 
-interface ProductTableProps {
-  productFunction: () => Product[];
+interface Product {
+  productName: string;
+  productCode: string;
 }
 
-const ProductTable: React.FC<ProductTableProps> = ({ productFunction }) => {
-  const products = productFunction();
+const ProductTable: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const navigate = useNavigate();
+
+  const handleCellClick = (product: Product) => {
+    navigate(`/add-product/${product.productName}`);
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/add-product');
+      const data = await response.json();
+      setProducts(data.products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleOnSubmit = async (data: { [key: string]: string }) => {
+    const newComponent: Product = {
+      productName: data.name,
+      productCode: data.code,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/add-product/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newComponent),
+      });
+      if (response.ok) {
+        fetchProducts();
+      } else {
+        console.error("Error adding component");
+      }
+    } catch (error) {
+      console.error('Error adding component:', error);
+    }
+  };
 
   return (
-    <div className="bg-white rounded-lg flex flex-col justify-center w-full md:w-2/3 lg:w-3/4 xl:w-4/5 2xl:w-3/4 p-5">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="max-w-full">S.No</TableHead>
-            <TableHead>Name of Product</TableHead>
-            <TableHead>Product Code</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className='cursor-pointer'>
-          {products.map((product, index) => (
-            <TableRow key={index + 1}>
-              <TableCell className="font-medium">{String(index + 1).padStart(2, '0')}</TableCell>
-              <TableCell>{product.label}</TableCell>
-              <TableCell>{product.code}</TableCell>
-              <TableCell><BsThreeDotsVertical /></TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className='flex flex-col justify-center items-center w-full'>
+      <DialogBox
+          onItemAdded={fetchProducts} 
+          defaultHolder="Tejas-U" 
+          handleSubmit={handleOnSubmit} 
+          itemName="Drone" 
+        />
+        <div className='mt-5 w-full justify-center items-center'>
+      <DataTable
+        data={products}
+        headers={['S.No', 'Name of Product', 'Product Code']}
+        keys={['productName', 'productCode']}
+        onRowClick={handleCellClick}
+      />
+        </div>
     </div>
   );
 };
