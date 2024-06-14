@@ -1,6 +1,5 @@
 import DroneIcon from "@/assets/icons/drone.svg";
 import MemberIcon from "@/assets/icons/member.svg";
-import AdminIcon from "@/assets/icons/admin.svg";
 
 export interface Product {
     label: string;
@@ -18,11 +17,7 @@ export const navLinks = [
         route: "/add-member",
         icon: MemberIcon,
     },
-    {
-        label: "Add New Admin",
-        route: "/add-admin",
-        icon: AdminIcon,
-    },
+   
 ];
 
 export const productNames = (): Product[] => [

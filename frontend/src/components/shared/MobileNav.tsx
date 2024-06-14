@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Logo from '@/assets/icons/react.svg'
 import Menu from '@/assets/icons/menu.svg'
+import Profile from '@/assets/icons/profile.svg'
 
 const MobileNav = () => {
   const pathname = useLocation();
@@ -18,10 +19,18 @@ const MobileNav = () => {
           height={28}
         />
       </Link>
-
+        
       <nav className="flex gap-2">
+      <Profile />
         <Sheet>
           <SheetTrigger>
+            <img
+              src={Profile}
+              alt="Profile"
+              width={32}
+              height={32}
+              className="cursor-pointer"
+            />
             <img 
               src={Menu}
               alt="menu"
