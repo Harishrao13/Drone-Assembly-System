@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {DataTable} from './DataTable';
+import { DialogBox } from './Dialogbox';
 
 interface Product {
   productName: string;
@@ -29,14 +30,47 @@ const ProductTable: React.FC = () => {
     fetchProducts();
   }, []);
 
+  const handleOnSubmit = async (data: { [key: string]: string }) => {
+    const newComponent: Product = {
+      productName: data.name,
+      productCode: data.code,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/add-product/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newComponent),
+      });
+      if (response.ok) {
+        fetchProducts();
+      } else {
+        console.error("Error adding component");
+      }
+    } catch (error) {
+      console.error('Error adding component:', error);
+    }
+  };
+
   return (
-    <DataTable
-      data={products}
-      headers={['S.No', 'Name of Product', 'Product Code']}
-      keys={['productName', 'productCode']}
-      onRowClick={handleCellClick}
-      fetchItems={fetchProducts}
-    />
+    <div className='flex flex-col justify-center items-center w-full'>
+      <DialogBox
+          onItemAdded={fetchProducts} 
+          defaultHolder="Tejas-U" 
+          handleSubmit={handleOnSubmit} 
+          itemName="Drone" 
+        />
+        <div className='mt-5 w-full justify-center items-center'>
+      <DataTable
+        data={products}
+        headers={['S.No', 'Name of Product', 'Product Code']}
+        keys={['productName', 'productCode']}
+        onRowClick={handleCellClick}
+      />
+        </div>
+    </div>
   );
 };
 

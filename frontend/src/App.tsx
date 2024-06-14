@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login } from '@/pages/auth/Login';
 import { Home } from '@/pages/Home';
-import { AddProduct } from '@/pages/addProduct';
 import { AddMember } from '@/pages/addMember';
 import { AddAdmin } from '@/pages/addAdmin';
-import { AddModel }  from '@/pages/addModel';
+import AddProduct from '@/pages/addProduct';
+import AddComponent from '@/pages/addComponent';
+import AddPart from '@/pages/addPart';
 
 const App = () => {
   return (
@@ -16,7 +17,9 @@ const App = () => {
           <Route path='/add-product' element={<AddProduct />} />
           <Route path='/add-member' element={<AddMember />} />
           <Route path='/add-admin' element={<AddAdmin />} />
-          <Route path='/add-model' element={<AddModel />} />
+          <Route path='/add-product/:productName' element={<AddComponent />} /> 
+          <Route path='/add-product/:productName/:componentLabel' element={<AddPart />} />
+
         </Routes>
       </div>
     </Router>

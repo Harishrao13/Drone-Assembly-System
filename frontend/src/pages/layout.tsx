@@ -21,7 +21,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {!isMobile && <Sidebar />}
       {isMobile && <MobileNav />}
       <div className="root-container">
-        <div className="wrapper">{children}</div>
+        <div className="wrapper flex flex-center">{children}</div>
       </div>
     </main>
   );
