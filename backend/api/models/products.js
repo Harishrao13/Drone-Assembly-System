@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 // Schema for individual parts within a component
 const PartSchema = new mongoose.Schema({
-  label: { type: String, required: true },
-  code: { type: String, required: true }
+  partLabel: { type: String, required: true },
+  // partCode: { type: String, required: true },
+  partQuantity: { type: Number, required: true }
 });
 
 // Schema for components of a product
 const ComponentSchema = new mongoose.Schema({
-  label: { type: String, required: true },
-  code: { type: String, required: true },
+  componentLabel: { type: String, required: true },
+  componentCode: { type: String, required: true },
   partList: [PartSchema]
 });
 
