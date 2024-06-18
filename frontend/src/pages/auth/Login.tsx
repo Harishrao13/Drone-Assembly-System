@@ -1,6 +1,7 @@
 import Logo from "@/assets/icons/react.svg"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 
 import {
   Card,
@@ -11,6 +12,11 @@ import {
 } from "@/components/ui/card"
 
 export function Login() {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate('/home');
+  }
+
   return (
     <div className="login flex items-center justify-center h-screen">
       <Card className="p-6 w-full max-w-lg">
@@ -36,7 +42,7 @@ export function Login() {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline">Admin Login</Button>
-          <Button>Login</Button>
+          <Button onClick={()=> {handleLogin()}}>Login</Button>
         </CardFooter>
       </Card>
     </div>

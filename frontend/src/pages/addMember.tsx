@@ -3,22 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import DropIcon from "@/assets/icons/dropdown-arrow.svg";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export function AddMember() {
   const [Password, setPassword] = useState("");
@@ -39,9 +27,9 @@ export function AddMember() {
                   </div>
                   <div className="flex flex-row space-x-4">
                     <Input id="password" placeholder="Password" type="password"
-                    value={Password}
-                    onChange={(e) => setPassword(e.target.value)} />
-                    <Button min-w-12>Generate QR</Button>
+                      value={Password}
+                      onChange={(e) => setPassword(e.target.value)} />
+                    <Button className='btn-primary'>Generate Password</Button>
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Input
@@ -57,17 +45,18 @@ export function AddMember() {
             </div>
           </CardContent>
           {Password === confirmPassword && (
-          <CardFooter className="flex justify-between">
-            <DropdownMenu>
-              <DropdownMenuTrigger className='bg-black text-white p-2 outline rounded-md'>Add as</DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel></DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Member</DropdownMenuItem>
-                <DropdownMenuItem>Admin</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </CardFooter>
+            <CardFooter className="flex justify-between">
+              <DropdownMenu>
+                <DropdownMenuTrigger className=' p-2 outline flex items-center'>
+                  <div className='mr-2'>Choose Role</div>
+                  <img src={DropIcon} width={20} height={20}/>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Member</DropdownMenuItem>
+                  <DropdownMenuItem>Admin</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </CardFooter>
           )}
         </Card>
       </div>

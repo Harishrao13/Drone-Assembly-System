@@ -20,28 +20,4 @@ export const navLinks = [
    
 ];
 
-export const productNames = (): Product[] => [
-    {
-        label: "TEJAS-M",
-        code: "AX"
-    },
-    {
-        label: "TEJAS-X",
-        code: "AM"
-    },
-];
 
-export const modelNames = (): Product[] => [
-    {
-        label: "Motor",
-        code: "M",
-    },
-    {
-        label: "Flight Controller",
-        code: "FC",
-    },
-    {
-        label: "Canopy",
-        code: "CA",
-    },
-];

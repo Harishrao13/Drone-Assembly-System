@@ -33,7 +33,7 @@ export function DialogBox({ defaultHolder, onItemAdded, handleSubmit, itemName }
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6">
+          <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6 rounded-3xl">
             + Add New {itemName}
           </Button>
         </DialogTrigger>

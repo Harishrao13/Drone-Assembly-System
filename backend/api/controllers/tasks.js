@@ -107,7 +107,9 @@ const createParts = async (req, res) => {
     if (!component) {
       return res.status(404).json({ msg: "Component not found" });
     }
-
+    if(partList.length === 0){
+      return res.status(400).json({ msg: "Part list is empty" });
+    }
     component.partList.push(partList);
     await product.save();
     res.status(201).json({ msg: "Part added successfully", product });

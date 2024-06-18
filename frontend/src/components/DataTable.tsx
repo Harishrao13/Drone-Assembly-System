@@ -1,5 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Dots from "@/assets/icons/dots.svg";
 interface TableProps<T> {
   data: T[];
   headers: string[];
@@ -10,7 +11,7 @@ interface TableProps<T> {
 export function DataTable<T>({ data = [], headers, keys, onRowClick }: TableProps<T>) {
   return (
     <div className='w-full bg-white rounded-lg overflow-x-auto'>
-      <Table className='min-w-full'>
+      <Table className='min-w-full border border-gray-300'>
         <TableHeader className='cursor-default'>
           <TableRow>
             {headers.map((header, index) => (
@@ -25,7 +26,18 @@ export function DataTable<T>({ data = [], headers, keys, onRowClick }: TableProp
               {keys.map((key, keyIndex) => (
                 <TableCell key={keyIndex}>{(item[key] as string)}</TableCell>
               ))}
-            </TableRow>
+              <TableCell className="border-none">
+                <DropdownMenu>
+                  <DropdownMenuTrigger className=' p-2 flex items-center'>
+                    <img src={Dots} width={25} height={25} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-700 font-bold">Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+          </TableRow>
           ))}
         </TableBody>
       </Table>

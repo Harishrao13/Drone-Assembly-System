@@ -11,7 +11,6 @@ interface Part {
 const PartTable: React.FC = () => {
   const [part, setPart] = useState<Part[]>([]);
   const { productName, componentLabel } = useParams<{ productName: string,componentLabel: string  }>();
-  // console.log(componentLabel)
 
   const fetchPart = async () => {
     try {
@@ -52,10 +51,12 @@ const PartTable: React.FC = () => {
       });
       if (response.ok) {
         fetchPart();
-      } else {
-        console.error('Error adding part');
       }
-    } catch (error) {
+      else {
+          console.error('Error adding part');
+        }
+      }
+     catch (error) { 
       console.error('Error adding part:', error);
     }
   };
