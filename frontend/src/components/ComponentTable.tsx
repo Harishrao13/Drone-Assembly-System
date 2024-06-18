@@ -3,10 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DataTable } from './DataTable';
 import { DialogBox } from './Dialogbox';
 
-interface Component {
-  componentLabel: string;
-  componentCode: string;
-}
+import { Component } from '@/types/Component';
 
 const ComponentTable: React.FC = () => {
   const [components, setComponents] = useState<Component[]>([]);

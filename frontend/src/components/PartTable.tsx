@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from './DataTable';
 import { DialogBox } from './Dialogbox';
 import { useParams } from 'react-router-dom';
-
-interface Part {
-  partLabel: string;
-  partQuantity: number;
-}
+import { Part } from "@/types/Part";
 
 const PartTable: React.FC = () => {
   const [part, setPart] = useState<Part[]>([]);
@@ -34,7 +30,7 @@ const PartTable: React.FC = () => {
       productName: productName as string,
       component: {
         componentLabel: componentLabel as string,
-        part: {
+        partList: {
           partLabel: data.name,
           partQuantity: Number(data.quantity)
         }
@@ -49,15 +45,16 @@ const PartTable: React.FC = () => {
         },
         body: JSON.stringify(newPart),
       });
+      console.log(JSON.stringify(newPart));
       if (response.ok) {
         fetchPart();
       }
       else {
-          console.error('Error adding part');
+          console.error('Error addung part');
         }
       }
-     catch (error) { 
-      console.error('Error adding part:', error);
+     catch (error) {
+      console.error('Error ading part:', error);
     }
   };
 

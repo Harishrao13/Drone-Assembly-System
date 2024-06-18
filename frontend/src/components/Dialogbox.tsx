@@ -4,12 +4,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface DialogBoxProps {
-  onItemAdded: () => void;
-  defaultHolder: string;
-  handleSubmit: (data: { [key: string]: string }) => void;
-  itemName: string;
-}
+import{ DialogBoxProps } from '@/types/DialogBoxProps';
 
 export function DialogBox({ defaultHolder, onItemAdded, handleSubmit, itemName }: DialogBoxProps) {
   const [formData, setFormData] = useState<{ [key: string]: string }>({ name: "", code: "", quantity: "" });
@@ -33,7 +28,7 @@ export function DialogBox({ defaultHolder, onItemAdded, handleSubmit, itemName }
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="mt-4 flex flex-center bg-blue-800 hover:bg-blue-900 text-xl p-6 rounded-3xl">
+          <Button className="btn-primary mt-4 flex flex-center text-xl p-6 rounded-3xl">
             + Add New {itemName}
           </Button>
         </DialogTrigger>

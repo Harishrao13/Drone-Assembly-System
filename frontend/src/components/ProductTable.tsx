@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {DataTable} from './DataTable';
 import { DialogBox } from './Dialogbox';
 
-interface Product {
-  productName: string;
-  productCode: string;
-}
+import { Product } from '@/types/Product';
 
 const ProductTable: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

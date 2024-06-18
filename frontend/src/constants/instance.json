@@ -1,0 +1,56 @@
+[
+    {
+        "productName": "Tejas-A",
+        "components": [
+            {
+                "componentLabel": "Propeller",
+                "componentCode": "P",
+                "partList": [
+                    {
+                        "label": "2480 w/o Adaptor",
+                        "serialNumber": "A"
+                    },
+                    {
+                        "label": "2388  w/o Adaptor",
+                        "serialNumber": "B"
+                    },
+                    {
+                        "label": "2480  w Adaptor",
+                        "serialNumber": "C"
+                    },
+                    {
+                        "label": "2388  w Adaptor",
+                        "serialNumber": "D"
+                    }
+                ]
+
+            },
+            {
+                "componentLabel": "Battery",
+                "componentCode": "B",
+                "partList": [
+                    {
+                        "label": "LP 16000",
+                        "serialNumber": "A"
+                    },
+                    {
+                        "label": "LP 22000",
+                        "serialNumber": "B"
+                    },
+                    {
+                        "label": "LP 25200",
+                        "serialNumber": "C"
+                    }
+                ]
+            },
+            {
+                "componentLabel": "Nozzle Bar",
+                "componentCode": "N"
+            },
+            {
+                "componentLabel": "Transmitter",
+                "componentCode": "T"
+            }
+        ]
+    }
+]

@@ -6,6 +6,7 @@ import {ChangePassword} from '@/pages/auth/Profile';
 import AddProduct from '@/pages/addProduct';
 import AddComponent from '@/pages/addComponent';
 import AddPart from '@/pages/addPart';
+import NewInstance from '@/pages/newInstance'; 
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path='/add-member' element={<AddMember />} />
           <Route path='/add-product/:productName' element={<AddComponent />} /> 
           <Route path='/add-product/:productName/:componentLabel' element={<AddPart />} />
+          <Route path='/new-instance' element={<NewInstance />} />
 
         </Routes>
       </div>

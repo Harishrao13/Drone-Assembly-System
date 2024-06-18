@@ -1,12 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Dots from "@/assets/icons/dots.svg";
-interface TableProps<T> {
-  data: T[];
-  headers: string[];
-  keys: (keyof T)[];
-  onRowClick?: (item: T) => void;
-}
+import { TableProps } from '@/types/TableProps';
 
 export function DataTable<T>({ data = [], headers, keys, onRowClick }: TableProps<T>) {
   return (

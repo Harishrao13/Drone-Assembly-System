@@ -137,11 +137,11 @@
   }
 
   .btn-primary {
-    @apply bg-blue-800 text-white font-bold rounded-xl
+    @apply bg-blue-800 text-white rounded-xl
   }
 
   .btn-primary:hover {
-    @apply bg-blue-900 !important;
+    @apply bg-blue-600 !important;
   }
 
   .sidebar {
