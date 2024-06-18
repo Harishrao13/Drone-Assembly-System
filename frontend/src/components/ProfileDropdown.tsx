@@ -2,11 +2,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import Profile from '@/assets/icons/profile.svg'
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 const ProfileDropdown = () => {
  const [isMobile, setIsMobile] = useState(window.innerWidth <= 815);
- 
+ const navigate = useNavigate();
+
+ const handleLogout = () => {
+   navigate('/');
+ }
+ const handlePassword = () => {
+   navigate('/change-password');
+ }
+
    useEffect(() => {
      const handleResize = () => {
        setIsMobile(window.innerWidth <= 815);
@@ -26,8 +35,8 @@ const ProfileDropdown = () => {
      <DropdownMenuLabel>My Account</DropdownMenuLabel>
      <DropdownMenuSeparator />
      <DropdownMenuItem>Profile</DropdownMenuItem>
-     <DropdownMenuItem>Change Password</DropdownMenuItem>
-     <DropdownMenuItem className="text-red-600 hover:text-white font-bold ">Logout</DropdownMenuItem>
+     <DropdownMenuItem onClick={()=>{handlePassword()}}>Change Password</DropdownMenuItem>
+     <DropdownMenuItem onClick={()=>{handleLogout()}} className="text-red-600 hover:text-white font-bold ">Logout</DropdownMenuItem>
    </DropdownMenuContent>
  </DropdownMenu>
    </div>
