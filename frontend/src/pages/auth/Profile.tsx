@@ -18,8 +18,8 @@ export function ChangePassword() {
 
   return (
     <Layout>
-    <div className="change-password flex items-center justify-center h-screen">
-      <Card className="p-6 w-80 max-w-md">
+    <div className="change-password flex items-center justify-center h-screen w-full">
+      <Card className="p-6 max-w-md w-full">
         <CardHeader>
           <CardTitle>Change Password</CardTitle>
         </CardHeader>

@@ -3,4 +3,5 @@ export interface TableProps<T> {
     headers: string[];
     keys: (keyof T)[];
     onRowClick?: (item: T) => void;
+    showActions?: boolean;
   }

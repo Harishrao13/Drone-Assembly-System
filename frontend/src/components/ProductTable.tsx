@@ -1,74 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {DataTable} from './DataTable';
-import { DialogBox } from './Dialogbox';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Dots from "@/assets/icons/dots.svg";
+import { TableProps } from '@/types/TableProps';
 
-import { Product } from '@/types/Product';
-
-const ProductTable: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const navigate = useNavigate();
-
-  const handleCellClick = (product: Product) => {
-    navigate(`/add-product/${product.productName}`);
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/v1/add-product');
-      const data = await response.json();
-      setProducts(data.products);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const handleOnSubmit = async (data: { [key: string]: string }) => {
-    const newComponent: Product = {
-      productName: data.name,
-      productCode: data.code,
-    };
-
-    try {
-      const response = await fetch(`http://localhost:5000/api/v1/add-product/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newComponent),
-      });
-      if (response.ok) {
-        fetchProducts();
-      } else {
-        console.error("Error adding component");
-      }
-    } catch (error) {
-      console.error('Error adding component:', error);
-    }
-  };
-
+export function ProductTable<T>({ data = [], headers, keys, onRowClick,showActions = true }: TableProps<T>) {
   return (
-    <div className='flex flex-col justify-center items-center w-full'>
-      <DialogBox
-          onItemAdded={fetchProducts} 
-          defaultHolder="Tejas-U" 
-          handleSubmit={handleOnSubmit} 
-          itemName="Drone" 
-        />
-        <div className='mt-5 w-full justify-center items-center'>
-      <DataTable
-        data={products}
-        headers={['S.No', 'Name of Product', 'Product Code']}
-        keys={['productName', 'productCode']}
-        onRowClick={handleCellClick}
-      />
-        </div>
+    <div className='w-full bg-white rounded-lg overflow-x-auto'>
+      <Table className='min-w-full border border-gray-300'>
+        <TableHeader className='cursor-default'>
+          <TableRow>
+            {headers.map((header, index) => (
+              <TableHead key={index} className="max-w-full">{header}</TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody className='cursor-pointer'>
+          {data.map((item, index) => (
+            <TableRow key={index} onClick={() => { onRowClick && onRowClick(item) }}>
+              <TableCell className="font-medium">{String(index + 1).padStart(2, '0')}</TableCell>
+              {keys.map((key, keyIndex) => (
+                <TableCell key={keyIndex}>{(item[key] as string)}</TableCell>
+              ))}
+              <TableCell className={`border-none ${showActions ? "block" : "hidden"}`}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className=' p-2 flex items-center'>
+                    <img src={Dots} width={25} height={25} />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-700 font-bold">Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+          </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
-};
-
-export default ProductTable;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DataTable } from './DataTable';
+import { ProductTable } from './ProductTable';
 import { DialogBox } from './Dialogbox';
 import { useParams } from 'react-router-dom';
 import { Part } from "@/types/Part";
@@ -67,7 +67,7 @@ const PartTable: React.FC = () => {
         itemName="Part" 
       />
       <div className='mt-5 w-full justify-center items-center'>
-        <DataTable
+        <ProductTable
           data={part}
           headers={['S.No', 'Name of Part', 'Quantity']}
           keys={['partLabel', 'partQuantity']}
