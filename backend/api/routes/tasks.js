@@ -17,8 +17,8 @@ router.route('/add-product/:productName').get(displayComponents)
 
 router.route('/add-product/:productName').post(createComponent)
 
-router.route('/add-product/:productName/:componentLabel').get(displayParts)
+router.route('/add-product/:productName/:componentLabel/parts').get(displayParts)
 
-router.route('/add-product/:productName/:componentLabel').post(createParts)
+router.route('/add-product/:productName/:componentLabel/parts').post(createParts)
 
 module.exports = router;

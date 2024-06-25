@@ -8,15 +8,15 @@ import DropIcon from "@/assets/icons/dropdown-arrow.svg";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-export function AddMember() {
+export function AddEmployee() {
   const [Password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <Layout>
-      <div className="addmember flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen">
         <Card className="p-6 w-full max-w-lg">
           <CardHeader>
-            <CardTitle>Add Member</CardTitle>
+            <CardTitle>Add Employee</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="form-container">
@@ -52,7 +52,7 @@ export function AddMember() {
                   <img src={DropIcon} width={20} height={20}/>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem>Member</DropdownMenuItem>
+                  <DropdownMenuItem>Employee</DropdownMenuItem>
                   <DropdownMenuItem>Admin</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
