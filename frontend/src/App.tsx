@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Login } from '@/pages/auth/Login';
 import { Home } from '@/pages/Home';
-import { AddMember } from '@/pages/addMember';
+import { AddEmployee } from '@/pages/addEmployee';
 import {ChangePassword} from '@/pages/auth/Profile';
 import AddDrone from '@/pages/addDrone';
 import AddComponent from '@/pages/addComponent';
@@ -18,9 +18,9 @@ const App = () => {
           <Route path='/home' element={<Home />} />
           <Route path='/change-password' element={<ChangePassword />} />
           <Route path='/add-product' element={<AddDrone />} />
-          <Route path='/add-member' element={<AddMember />} />
-          <Route path='/add-product/:productName' element={<AddComponent />} /> 
-          <Route path='/add-product/:productName/:componentLabel' element={<AddPart />} />
+          <Route path='/add-employee' element={<AddEmployee />} />
+          <Route path='/add-product/:productName/components' element={<AddComponent />} /> 
+          <Route path='/add-product/:productName/:componentLabel/parts' element={<AddPart />} />
           <Route path='/new-instance' element={<AddInstance />} />
           <Route path='/new-instance/:productName' element={<NewInstance />} />
 

@@ -69,39 +69,16 @@ export const columns: ColumnDef<InstanceProps>[] = [
     cell: ({ row }) => <div className="Capitalize">{row.getValue("componentName")}</div>,
   },
   {
-    accessorKey: "units",
-    header: () => <div className="text-right">Units</div>,
-    cell: ({ row }) => {
-      const units = parseFloat(row.getValue("units") as string)
-
-      return <div className="text-right font-medium">{units}</div>
-    },
-  },
-  {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize disabled">{row.getValue("status")}</div>
     ),
   },
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+    cell: () => (
+      <Checkbox disabled />
     ),
     enableSorting: false,
     enableHiding: false,

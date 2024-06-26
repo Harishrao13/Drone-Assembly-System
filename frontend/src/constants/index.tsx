@@ -11,13 +11,13 @@ export type InstanceProps = {
 
 export const navLinks = [
     {
-        label: "Add New Product",
+        label: "New Product",
         route: "/add-product",
         icon: DroneIcon,
     },
     {
-        label: "Add New Member",
-        route: "/add-member",
+        label: "Add Employee",
+        route: "/add-employee",
         icon: MemberIcon,
     },
    
