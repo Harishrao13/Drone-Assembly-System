@@ -55,6 +55,22 @@ const AddComponent = () => {
         console.error('Error adding component:', error);
       }
     };
+
+    const handleDelete = async (component: Component) => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/v1/add-product/${productName}/${component.componentLabel}`, {
+          method: "DELETE",
+        });
+        if (response.status === 202) {
+          fetchComponents();
+        } else {
+          console.error("Error deleting compnent");
+        }
+      } catch (error) {
+        console.error('Error deleting component:', error);
+      }
+    }
+
   return (
     <Layout>
     <div className="flex flex-col justify-center items-center w-full">
@@ -70,6 +86,7 @@ const AddComponent = () => {
           headers={['S.No', 'Name of Component', 'Component Code']}
           keys={['componentLabel', 'componentCode']}
           onRowClick={handleCellClick}
+          onDelete={handleDelete}
         />
       </div>
     </div>

@@ -1,29 +1,9 @@
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import Dots from "@/assets/icons/dots.svg";
 import { TableProps } from "@/types/TableProps";
 
-export function ProductTable<T>({
-	data = [],
-	headers,
-	keys,
-	onRowClick,
-	onEdit,
-	onDelete,
-	showActions = true,
-}: TableProps<T>) {
+export function ProductTable<T>({ data = [], headers, keys, onRowClick, onEdit, onDelete, showActions = true}: TableProps<T>) {
 	return (
 		<div className="w-full bg-white rounded-lg overflow-x-auto">
 			<Table className="min-w-full border border-gray-300">
