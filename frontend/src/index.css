@@ -6,10 +6,12 @@
 @import "@fontsource/poppins/500.css";
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
+@import '@fontsource/roboto';
 
 @layer base {
   :root {
     --font-poppins: 'Poppins', sans-serif;
+    --font-roboto: 'Roboto', sans-serif;
     background: linear-gradient(to right, #faf8f5, #ffffff);
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
