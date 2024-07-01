@@ -14,7 +14,6 @@ const AddPart = () => {
       const response = await fetch(`http://localhost:5000/api/v1/add-product/${productName}/${componentLabel}/parts`);
       const data = await response.json();
       setPart(data.parts);
-      console.log(data)
     } catch (error) {
       console.error('Error fetching part:', error);
     }
@@ -46,7 +45,6 @@ const AddPart = () => {
         },
         body: JSON.stringify(newPart),
       });
-      console.log(JSON.stringify(newPart));
       if (response.ok) {
         fetchPart();
       }
@@ -58,6 +56,22 @@ const AddPart = () => {
       console.error('Error adding part:', error);
     }
   };
+
+  const handleDelete = async (part: Part) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/add-product/${productName}/${componentLabel}/${part.partLabel}`, {
+        method: 'DELETE',
+      });
+      if (response.status === 202) {
+        fetchPart();
+      } else {
+        console.error('Error deleting part');
+      }
+    } catch (error) {
+      console.error('Error deleting part:', error);
+    }
+  }
+
   return (
         <Layout>
     <div className='flex flex-col justify-center items-center w-full'>
@@ -72,6 +86,7 @@ const AddPart = () => {
           data={part}
           headers={['S.No', 'Name of Part', 'Quantity']}
           keys={['partLabel', 'partQuantity']}
+          onDelete={handleDelete}
         />
       </div>
     </div>

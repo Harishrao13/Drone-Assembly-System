@@ -7,13 +7,12 @@ import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-
 export function AddEmployee() {
   const [Password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   return (
     <Layout>
-      <div className="addmember flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center h-screen">
         <Card className="p-6 w-full max-w-lg">
           <CardHeader>
             <CardTitle>Add Employee</CardTitle>

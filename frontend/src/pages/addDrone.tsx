@@ -52,6 +52,22 @@ const addDrone = () => {
     }
   };
 
+  const handleDelete = async (product: Product) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/add-product/${product.productName}`, {
+        method: "DELETE",
+      });
+      if (response.status === 202) {
+        fetchProducts();
+      } else {
+        console.log(response.status)
+        console.error("Error deleting product");
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
   return (
     <Layout>
       <div className='flex flex-col justify-center items-center w-full'>
@@ -67,6 +83,7 @@ const addDrone = () => {
         headers={['S.No', 'Name of Product', 'Product Code']}
         keys={['productName', 'productCode']}
         onRowClick={handleCellClick}
+        onDelete={handleDelete}
       />
         </div>
     </div>
