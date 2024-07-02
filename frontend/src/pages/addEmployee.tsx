@@ -3,10 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-import DropIcon from "@/assets/icons/dropdown-arrow.svg";
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function AddEmployee() {
   const [Password, setPassword] = useState("");
@@ -45,18 +44,20 @@ export function AddEmployee() {
             </div>
           </CardContent>
           {Password === confirmPassword && (
-            <CardFooter className="flex justify-between">
-              <DropdownMenu>
-                <DropdownMenuTrigger className=' p-2 outline flex items-center'>
-                  <div className='mr-2'>Choose Role</div>
-                  <img src={DropIcon} width={20} height={20}/>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Member</DropdownMenuItem>
-                  <DropdownMenuItem>Admin</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </CardFooter>
+           <div className='flex ml-6 flex-row space-x-16'> 
+            <Select>
+             <SelectTrigger className="w-[180px]">
+             <SelectValue placeholder="Choose Role" />
+             </SelectTrigger>
+           <SelectContent>
+             <SelectItem value="employee">Employee</SelectItem>
+             <SelectItem value="admin">Admin</SelectItem>
+           </SelectContent>
+           </Select>
+          <CardFooter>
+            <Button className='btn-primary'>Save</Button>
+          </CardFooter>
+          </div>
           )}
         </Card>
       </div>
