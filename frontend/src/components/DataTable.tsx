@@ -1,6 +1,10 @@
 "use client"
 
-import * as React from "react"
+import { useParams } from "react-router-dom"
+import { useState, useEffect } from "react"
+
+import { Part } from "@/types/Part"
+import { Component } from "@/types/Component"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -20,7 +24,6 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
-  // DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -35,7 +38,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { InstanceTable, InstanceProps } from "@/constants/index"
+import { InstanceProps } from "@/types/InstanceProps"
 
 export const columns: ColumnDef<InstanceProps>[] = [
   {
@@ -69,10 +72,10 @@ export const columns: ColumnDef<InstanceProps>[] = [
     cell: ({ row }) => <div className="Capitalize">{row.getValue("componentName")}</div>,
   },
   {
-    accessorKey: "status",
+    accessorKey: "partQuantity",
     header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize disabled">{row.getValue("status")}</div>
+      <div className="capitalize disabled">0/{row.getValue("partQuantity")}</div>
     ),
   },
   {
@@ -105,16 +108,44 @@ export const columns: ColumnDef<InstanceProps>[] = [
 ]
 
 export default function DataTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const { productName } = useParams<{ productName: string }>()
+  const [data, setData] = useState<InstanceProps[]>([])
+
+  const fetchComponentsAndParts = async () => {
+    try {
+      const componentResponse = await fetch(`http://localhost:5000/api/v1/add-product/${productName}`);
+      const componentData = await componentResponse.json();
+
+      const componentsWithParts = await Promise.all(
+        componentData.components.map(async (component: Component) => {
+          const partResponse = await fetch(`http://localhost:5000/api/v1/add-product/${productName}/${component.componentLabel}/parts`);
+          const partData = await partResponse.json();
+          
+          return partData.parts.map((part: Part) => ({
+            partName: part.partLabel,
+            componentName: component.componentLabel,
+            partQuantity: part.partQuantity,
+          }));
+        })
+      );
+
+      setData(componentsWithParts.flat());
+    } catch (error) {
+      console.error('Error fetching components and parts:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComponentsAndParts();
+  }, [productName]);
+
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data: InstanceTable,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -130,7 +161,7 @@ export default function DataTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -192,12 +223,11 @@ export default function DataTable() {
               </TableRow>
             )}
           </TableBody>
-
         </Table>
       </div>
       <div className="flex-1 text-sm text-muted-foreground space-x-2 py-4">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) registered.
+        {table.getFilteredRowModel().rows.length} row(s) assembled.
       </div>
     </div>
   )

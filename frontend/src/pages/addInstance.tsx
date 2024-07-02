@@ -29,7 +29,7 @@ const addInstance: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col w-full">
-        <h1 className="text-2xl font-bold">Select a drone to start new instance.</h1>
+        <h1 className="text-2xl font-bold">Select a drone to start new instance!</h1>
         <div className="mt-5 w-full justify-center items-center">
           <ProductTable
             data={products}
