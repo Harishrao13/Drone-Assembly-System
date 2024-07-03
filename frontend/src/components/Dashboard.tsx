@@ -29,7 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { InstanceTable, InstanceProps } from "@/constants/index"
+import { InstanceProps } from "@/constants/index"
 
 export const columns: ColumnDef<InstanceProps>[] = [
   {
@@ -96,9 +96,10 @@ export default function Dashboard() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-
+  const [data, setData] = React.useState([]);
+  const [columns, setColumns] = React.useState([]);
   const table = useReactTable({
-    data: InstanceTable,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -121,7 +122,7 @@ export default function Dashboard() {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search for a Part..."
+          placeholder="Search for a Drone..."
           value={(table.getColumn("droneName")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("droneName")?.setFilterValue(event.target.value)
