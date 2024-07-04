@@ -37,10 +37,6 @@ const newInstance = () => {
   return (
     <Layout>
       <div className="home flex flex-col">
-        <div className="">
-          <Button className="py-8 px-8 text-lg bg-blue-800 hover:bg-blue-900 rounded-3xl">Scan QR code</Button>
-        </div>
-        <h1 className="h3-bold py-8">OR</h1>
         <div className="grid w-full">
           <form onSubmit={handleSubmit}>
             <Label htmlFor="text" className="text-lg font-semibold">
@@ -69,6 +65,7 @@ const newInstance = () => {
         <Separator />
         <DataTable />
       </div>
+
     </Layout>
   );
 };

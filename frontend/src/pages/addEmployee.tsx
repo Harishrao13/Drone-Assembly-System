@@ -43,7 +43,9 @@ export function AddEmployee() {
               </form>
             </div>
           </CardContent>
-          {Password === confirmPassword && (
+          {Password !== confirmPassword && (
+              <div className="text-red-600 justify-items-center">The passwords do not match!</div>
+            )}
            <div className='flex ml-6 flex-row space-x-16'> 
             <Select>
              <SelectTrigger className="w-[180px]">
@@ -58,7 +60,6 @@ export function AddEmployee() {
             <Button className='btn-primary'>Save</Button>
           </CardFooter>
           </div>
-          )}
         </Card>
       </div>
     </Layout>

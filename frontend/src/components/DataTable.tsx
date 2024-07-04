@@ -37,6 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { CardFooter } from "./ui/card"
 
 import { InstanceProps } from "@/types/InstanceProps"
 
@@ -228,6 +229,13 @@ export default function DataTable() {
       <div className="flex-1 text-sm text-muted-foreground space-x-2 py-4">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) assembled.
+      </div>
+      <div>
+      <CardFooter className="flex-center gap-10" >
+       <Button variant="destructive">Discard</Button>
+       <Button variant={"secondary"}>Archive</Button>
+       <Button className="bg-green-600" disabled={table.getFilteredRowModel().rows.length != table.getFilteredSelectedRowModel().rows.length} >Submit</Button>
+        </CardFooter>  
       </div>
     </div>
   )
