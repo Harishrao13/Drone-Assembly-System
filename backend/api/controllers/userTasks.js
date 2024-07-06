@@ -1,5 +1,4 @@
 const User = require("../models/users");
-const Product = require("../models/products");
 
 const getAllTasks = (req, res) => {
   res.send("Hello from Controller!");

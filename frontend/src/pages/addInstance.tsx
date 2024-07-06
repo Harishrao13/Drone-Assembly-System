@@ -4,12 +4,30 @@ import { ProductTable } from "@/components/ProductTable";
 import Layout from "./layout";
 import { Product } from "@/types/Product";
 
-const addInstance: React.FC = () => {
+const AddInstance: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
 
-  const handleCellClick = (product: Product) => {
-    navigate(`/new-instance/${product.productName}`);
+  const handleCellClick = async (product: Product) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/initialize-instance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productName: product.productName }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        const instanceId = data.instanceId;
+        navigate(`/new-instance/${product.productName}/${instanceId}`);
+      } else {
+        console.error("Error initializing instance:", data.msg);
+      }
+    } catch (error) {
+      console.error("Error initializing instance:", error);
+    }
   };
 
   const fetchProducts = async () => {
@@ -29,7 +47,7 @@ const addInstance: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col w-full">
-        <h1 className="text-2xl font-bold">Select a drone to start new instance!</h1>
+        <h1 className="text-2xl font-bold">Select a drone to start a new instance!</h1>
         <div className="mt-5 w-full justify-center items-center">
           <ProductTable
             data={products}
@@ -44,4 +62,4 @@ const addInstance: React.FC = () => {
   );
 };
 
-export default addInstance;
+export default AddInstance;
