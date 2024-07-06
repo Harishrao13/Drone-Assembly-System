@@ -2,14 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-<<<<<<< Updated upstream
 @import "@fontsource/poppins/400.css";
 @import "@fontsource/poppins/500.css";
 @import "@fontsource/poppins/600.css";
 @import "@fontsource/poppins/700.css";
 
-=======
->>>>>>> Stashed changes
 @layer base {
   :root {
     --font-poppins: 'Poppins', sans-serif;
