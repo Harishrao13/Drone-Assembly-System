@@ -7,7 +7,7 @@ import { Part } from "@/types/Part";
 
 const AddPart = () => {
   const [part, setPart] = useState<Part[]>([]);
-  const { productName, componentLabel } = useParams<{ productName: string,componentLabel: string  }>();
+  const { productName, componentLabel } = useParams<{ productName: string, componentLabel: string }>();
 
   const fetchPart = async () => {
     try {
@@ -32,6 +32,7 @@ const AddPart = () => {
         componentLabel: componentLabel as string,
         partList: {
           partLabel: data.name,
+          partCode: data.code,
           partQuantity: Number(data.quantity)
         }
       }
@@ -47,12 +48,10 @@ const AddPart = () => {
       });
       if (response.ok) {
         fetchPart();
+      } else {
+        console.error('Error adding part');
       }
-      else {
-          console.error('Error adding part');
-        }
-      }
-     catch (error) {
+    } catch (error) {
       console.error('Error adding part:', error);
     }
   };
@@ -70,26 +69,26 @@ const AddPart = () => {
     } catch (error) {
       console.error('Error deleting part:', error);
     }
-  }
+  };
 
   return (
-        <Layout>
-    <div className='flex flex-col justify-center items-center w-full'>
-      <DialogBox 
-        onItemAdded={fetchPart} 
-        defaultHolder="2230 w/o motor" 
-        handleSubmit={handleOnSubmit} 
-        itemName="Part" 
-      />
-      <div className='mt-5 w-full justify-center items-center'>
-        <ProductTable
-          data={part}
-          headers={['S.No', 'Name of Part', 'Quantity']}
-          keys={['partLabel', 'partQuantity']}
-          onDelete={handleDelete}
+    <Layout>
+      <div className='flex flex-col justify-center items-center w-full'>
+        <DialogBox
+          onItemAdded={fetchPart}
+          defaultHolder="2230 w/o motor"
+          handleSubmit={handleOnSubmit}
+          itemName="Part"
         />
+        <div className='mt-5 w-full justify-center items-center'>
+          <ProductTable
+            data={part}
+            headers={['S.No', 'Name of Part', 'Part Code', 'Quantity']}
+            keys={['partLabel', 'partCode', 'partQuantity']} 
+            onDelete={handleDelete}
+          />
+        </div>
       </div>
-    </div>
     </Layout>
   );
 };

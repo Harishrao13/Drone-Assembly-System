@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '../components/ui/input';
@@ -9,18 +10,19 @@ import { Separator } from '@/components/ui/separator';
 
 const newInstance = () => {
   const [serialNumber, setSerialNumber] = useState('');
+  const {productName, instanceId} = useParams();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(serialNumber);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/new-instance/`,{
+      const response = await fetch(`http://localhost:5000/api/v1/new-instance/${productName}/${instanceId}`,{
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(serialNumber),
+        body: JSON.stringify({ serialNumber: serialNumber }),
       });
       if(response.ok){
         console.log('Serial number added successfully');
@@ -34,13 +36,14 @@ const newInstance = () => {
 
   };
 
+
   return (
     <Layout>
       <div className="home flex flex-col">
         <div className="grid w-full">
           <form onSubmit={handleSubmit}>
-            <Label htmlFor="text" className="text-lg font-semibold">
-              Enter Serial Number:
+            <Label htmlFor="text" className="text-lg font-semibold flex justify-start">
+              Scan QR or Enter Serial Number:
             </Label>
             <div className="flex flex-row items-center">
               <Input
@@ -49,6 +52,7 @@ const newInstance = () => {
                 placeholder="PA24MB0600051"
                 className="h-12 text-lg bg-gray-200 mr-2"
                 value={serialNumber}
+                autoFocus={true}
                 onChange={(e) => setSerialNumber(e.target.value)}
               />
               <Button className="bg-white hover:bg-white" type="submit">
