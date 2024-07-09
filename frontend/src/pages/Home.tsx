@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
-import  RightArrow  from "@/assets/icons/right-arrow.svg"
+import { ChevronRight } from "lucide-react";
 import Layout from './layout';
 
 export function Home() {
@@ -14,13 +14,15 @@ export function Home() {
     <Layout>
       <div className="home flex flex-col space-y-24">
         <div className="font-bold text-4xl flex justify-items-start ">
-        TRACK COMPONENT
+        Track Component
         </div>
         <div className="grid w-full">
           <Label htmlFor="text" className="text-lg font-semibold">Enter Serial Number:</Label>
           <div className="flex flex-row items-center">
           <Input type="text" id="text" placeholder="PS22AM050001" className="h-12 text-lg bg-gray-200 mr-2" />
-          <img src={RightArrow} alt="logo" className="cursor-pointer" width={40} height={40}/>
+          <Button variant="outline" size="icon">
+          <ChevronRight className="h-6 w-6" />
+          </Button>
           </div>
         </div>
         <div>
