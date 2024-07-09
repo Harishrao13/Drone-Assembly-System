@@ -12,9 +12,9 @@ export function Home() {
   }
   return (
     <Layout>
-      <div className="home flex flex-col space-y-24">
-        <div className="font-bold text-4xl flex justify-items-start ">
-        Track Component
+      <div className="home flex flex-col space-y-12">
+        <div className="font-bold text-3xl flex justify-items-start">
+        Track a Component
         </div>
         <div className="grid w-full">
           <Label htmlFor="text" className="text-lg font-semibold">Enter Serial Number:</Label>
@@ -26,6 +26,9 @@ export function Home() {
           </div>
         </div>
         <div>
+        <div className="font-bold text-2xl">
+          OR
+        </div>
         <Button onClick={() => {handleInstance()}} className="py-8 px-8 mt-8 text-lg bg-blue-800 hover:bg-blue-900 rounded-3xl">+ Add Instance</Button>
         </div>
       </div>

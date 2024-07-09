@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // Schema for individual parts within a component
 const PartSchema = new mongoose.Schema({
   partLabel: { type: String, required: true },
-  // partCode: { type: String, required: true },
+  partCode: { type: String, required: true },
   partQuantity: { type: Number, required: true }
 });
 

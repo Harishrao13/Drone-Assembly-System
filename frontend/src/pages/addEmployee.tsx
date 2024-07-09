@@ -3,62 +3,68 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-
-import { Card, CardContent, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function AddEmployee() {
-  const [Password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   return (
     <Layout>
       <div className="flex items-center justify-center h-screen">
-        <Card className="p-6 w-full max-w-lg">
+        <Card className="p-6 w-full max-w-lg shadow-lg">
           <CardHeader>
-            <CardTitle>Add Employee</CardTitle>
+            <CardTitle>Register New Employee</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="form-container">
               <form>
                 <div className="grid w-full gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Input id="name" placeholder="User ID" />
-                  </div>
-                  <div className="flex flex-row space-x-4">
-                    <Input id="password" placeholder="Password" type="password"
-                      value={Password}
-                      onChange={(e) => setPassword(e.target.value)} />
-                    <Button className='btn-primary'>Generate Password</Button>
+                    <Input id="name" placeholder="User ID" className="p-2 border border-gray-300 rounded-md" />
                   </div>
                   <div className="flex flex-col space-y-1.5">
+                    <div className="flex flex-row items-center space-x-4">
+                      <Input
+                        id="password"
+                        placeholder="Password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="p-2 border border-gray-300 rounded-md"
+                      />
+                      <Button className='btn-primary'>Generate Password</Button>
+                    </div>
                     <Input
                       id="confirmPassword"
                       placeholder="Confirm Password"
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="p-2 border border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
               </form>
             </div>
           </CardContent>
-          {Password !== confirmPassword && (
-              <div className="text-red-600 justify-items-center">The passwords do not match!</div>
-            )}
-           <div className='flex ml-6 flex-row space-x-16'> 
+          {password !== confirmPassword && (
+            <div className="text-red-600 font-semibold text-center mt-2">The passwords do not match!</div>
+          )}
+          <div className='flex flex-col items-center mt-4'>
             <Select>
-             <SelectTrigger className="w-[180px]">
-             <SelectValue placeholder="Choose Role" />
-             </SelectTrigger>
-           <SelectContent>
-             <SelectItem value="employee">Employee</SelectItem>
-             <SelectItem value="admin">Admin</SelectItem>
-           </SelectContent>
-           </Select>
-          <CardFooter>
-            <Button className='btn-primary'>Save</Button>
-          </CardFooter>
+              <SelectTrigger className="w-[180px] border border-gray-300 rounded-md">
+                <SelectValue placeholder="Choose Role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="employee">Employee</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+              </SelectContent>
+            </Select>
+            <CardFooter className="mt-4">
+              <Button className='btn-primary rounded-lg'>Register</Button>
+            </CardFooter>
           </div>
         </Card>
       </div>

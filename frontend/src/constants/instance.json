@@ -1,55 +1,27 @@
 [
-    {
-        "productName": "Tejas-A",
+    {   
+        "droneID": "PA24DR0600001", 
+        "productName": "Tejas-A",   
+        "assembledBy": "John Doe",  
+        "assembledOn": "2021-01-01", 
+        "progress": "archived", 
         "components": [
             {
-                "componentLabel": "Propeller",
-                "componentCode": "P",
-                "partList": [
-                    {
-                        "label": "2480 w/o Adaptor",
-                        "serialNumber": "A"
-                    },
-                    {
-                        "label": "2388  w/o Adaptor",
-                        "serialNumber": "B"
-                    },
-                    {
-                        "label": "2480  w Adaptor",
-                        "serialNumber": "C"
-                    },
-                    {
-                        "label": "2388  w Adaptor",
-                        "serialNumber": "D"
-                    }
+                "componentLabel": "Motor",
+                "SerialNumber": [
+                    "PA24MA0600015",
+                    "PA24MA0600016",
+                    "PA24MA0600017"
                 ]
-
             },
             {
                 "componentLabel": "Battery",
-                "componentCode": "B",
-                "partList": [
-                    {
-                        "label": "LP 16000",
-                        "serialNumber": "A"
-                    },
-                    {
-                        "label": "LP 22000",
-                        "serialNumber": "B"
-                    },
-                    {
-                        "label": "LP 25200",
-                        "serialNumber": "C"
-                    }
+                "SerialNumber": [
+                    "PA24BY0600015",
+                    "PA24BY0600016",
+                    "PA24BY0600017",
+                    "PA24MA0600018"
                 ]
-            },
-            {
-                "componentLabel": "Nozzle Bar",
-                "componentCode": "N"
-            },
-            {
-                "componentLabel": "Transmitter",
-                "componentCode": "T"
             }
         ]
     }
