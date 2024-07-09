@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -21,14 +20,14 @@ export function Login() {
     <div className="login flex items-center justify-center h-screen">
       <Card className="p-6 w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Member Login</CardTitle>
+          <CardTitle>Employee Login</CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-row items-center justify-between">
-          <div className="logo-container mr-8">
+        <CardContent className="flex flex-row items-center">
+          <div className="logo-container flex-1 flex justify-center">
             <img src={Logo} alt="Logo" width={120} height={110} />
           </div>
-          <div className="form-container">
-            <form>
+          <div className="form-container flex-1 flex flex-col">
+            <form className="flex flex-col gap-4 h-full">
               <div className="grid w-full gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Input id="name" placeholder="Email"/>
@@ -37,13 +36,12 @@ export function Login() {
                   <Input id="password" placeholder="Password" type="password" />
                 </div>
               </div>
+              <div className="flex justify-end mt-auto">
+                <Button onClick={handleLogin} className="btn-primary">Login</Button>
+              </div>
             </form>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Admin Login</Button>
-          <Button onClick={()=> {handleLogin()}}>Login</Button>
-        </CardFooter>
       </Card>
     </div>
   )
