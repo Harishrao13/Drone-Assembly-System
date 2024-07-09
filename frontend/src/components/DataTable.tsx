@@ -1,6 +1,6 @@
 "use client"
 
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 import { Part } from "@/types/Part"
@@ -109,8 +109,9 @@ export const columns: ColumnDef<InstanceProps>[] = [
 ]
 
 export default function DataTable() {
-  const { productName } = useParams<{ productName: string }>()
+  const {productName, instanceId} = useParams();
   const [data, setData] = useState<InstanceProps[]>([])
+  const navigate = useNavigate();
 
   const fetchComponentsAndParts = async () => {
     try {
@@ -163,6 +164,63 @@ export default function DataTable() {
       rowSelection,
     },
   });
+
+  const handleDelete = async () => {
+
+    try{
+      const response = await fetch(`http://localhost:5000/api/v1/new-instance/${productName}/${instanceId}`,{
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      if(response.ok){
+        console.log('Parts discarded successfully');
+      } else {
+        console.error('Error discarding instance');
+      }
+    } catch (error) {
+      console.error('Error handling serial number:', error);
+    }
+  }
+
+  const handleSubmit = async () => {
+    try{
+      const response = await fetch(`http://localhost:5000/api/v1/new-instance/${productName}/${instanceId}/completed`,{
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      if(response.ok){
+        console.log('Instance marked as completed successfully');
+        navigate(`/new-instance`)
+      } else {
+        console.error('Error marking instance as completed');
+      }
+    } catch (error) {
+      console.error('Error marking instance as completed:', error);
+    }
+  }
+
+  const handleArchive = async () => {
+    try{
+      const response = await fetch(`http://localhost:5000/api/v1/new-instance/${productName}/${instanceId}/archived`,{
+        method: 'PATCH',
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      if(response.ok){
+        console.log('Instance marked as archived successfully');
+        navigate(`/new-instance`)
+      } else {
+        console.error('Error marking instance as archived');
+      }
+    } catch (error) {
+      console.error('Error marking instance as archived:', error);
+    }
+  }
 
   return (
     <div className="w-full">
@@ -232,9 +290,9 @@ export default function DataTable() {
       </div>
       <div>
       <CardFooter className="flex-center gap-10" >
-       <Button variant="destructive">Discard</Button>
-       <Button variant={"secondary"}>Archive</Button>
-       <Button className="bg-green-600" disabled={table.getFilteredRowModel().rows.length != table.getFilteredSelectedRowModel().rows.length} >Submit</Button>
+       <Button variant="destructive" onClick={handleDelete}>Discard</Button>
+       <Button variant={"secondary"} onClick={handleArchive}>Archive</Button>
+       <Button className="bg-green-600" onClick={handleSubmit} disabled={table.getFilteredRowModel().rows.length != table.getFilteredSelectedRowModel().rows.length} >Submit</Button>
         </CardFooter>  
       </div>
     </div>
