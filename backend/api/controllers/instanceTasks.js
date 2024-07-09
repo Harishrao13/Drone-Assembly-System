@@ -35,6 +35,7 @@ const validateSerial = async (req, res) => {
                 if (part.partCode === partCode) {
                     partFound = true;
                     partComponent = component.componentLabel;
+                    partQuantity = part.partQuantity;
                     break;
                 }
             }
@@ -52,18 +53,32 @@ const validateSerial = async (req, res) => {
         return res.status(500).json({ msg: error.message || error });
     }
 
-    // Check if serial number is unique in Instance Database
+
     try {
+
+        const instance = await Instance.findOne({ _id: instanceId });
+        if (instance.progress === 'completed') {
+            return res.status(400).json({ msg: "Instance is already complete" });
+        }
+        
+        const component = instance.components.find(c => c.componentLabel === partComponent);
+        if (component.serialNumbers.length >= partQuantity) {
+            return res.status(400).json({ msg: "Unit limit reached for drone" });
+        }
+
         const isSerialNumberExists = await Instance.aggregate([
             { $unwind: "$components" },
-            { $unwind: "$components.SerialNumber" },
-            { $match: { "components.SerialNumber": serialNumber } },
+            { $unwind: "$components.serialNumbers" },
+            { $match: { "components.serialNumbers": serialNumber } },
             { $limit: 1 }
         ]);
+
 
         if (isSerialNumberExists.length > 0) {
             return res.status(400).json({ msg: "Serial number already registered" });
         }
+
+
     } catch (error) {
         console.error("Error checking serial number:", error);
         return res.status(500).json({ msg: error.message || error });
@@ -73,7 +88,7 @@ const validateSerial = async (req, res) => {
     try {
         const updatedInstance = await Instance.findOneAndUpdate(
             { _id: instanceId, "components.componentLabel": partComponent },
-            { $push: { "components.$.SerialNumber": serialNumber } },
+            { $push: { "components.$.serialNumbers": serialNumber } },
             { new: true, runValidators: true }
         );
 
@@ -86,8 +101,6 @@ const validateSerial = async (req, res) => {
         console.error("Error updating instance:", error);
         return res.status(500).json({ msg: error.message || error });
     }
-
-    //TODO: Check units limit
 };
 
 const createNewInstance = async (req, res) => {
@@ -105,7 +118,7 @@ const createNewInstance = async (req, res) => {
 
         const components = product.components.map(component => ({
             componentLabel: component.componentLabel,
-            SerialNumber: []
+            serialNumbers: []
         }));
 
         const newInstance = new Instance({
@@ -123,4 +136,62 @@ const createNewInstance = async (req, res) => {
     }
 };
 
-module.exports = { validateSerial, createNewInstance };
+const deleteInstance = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        await Instance.deleteOne({ _id: instanceId });
+        res.status(202).json({ msg: "Instance deleted successfully" });
+
+    } catch (error){
+        console.error("Error deleting instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const updateProgressCompleted = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        const updateProgess = await Instance.findOneAndUpdate( 
+            { _id: instanceId }, 
+            { progress: 'completed', assembledOn: new Date() }, //TODO: Add assembledBy, droneID
+            { new: true, runValidators: true }
+        );
+        
+        if(updateProgess){
+            res.status(200).json({ msg: "Instance completed successfully" });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error updating instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const updateProgressArchived = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        const updateProgess = await Instance.findOneAndUpdate( 
+            { _id: instanceId }, 
+            { progress: 'archived' },
+            { new: true, runValidators: true }
+        );
+        
+        if(updateProgess){
+            res.status(200).json({ msg: "Instance archived successfully" });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error updating instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+
+}
+
+
+module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived };
