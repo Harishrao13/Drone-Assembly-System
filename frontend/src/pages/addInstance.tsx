@@ -57,6 +57,19 @@ const AddInstance: React.FC = () => {
             showActions={false}
           />
         </div>
+        <div className="flex-col space-y-8">
+        <div className="text-4xl font-extrabold flex justify-center">OR</div>
+        <h1 className="text-2xl font-bold">Archived: Pick where you left</h1>
+        </div>
+        <div className="mt-5 w-full justify-center items-center">
+          <ProductTable
+            data={products}
+            headers={["S.No", "Name of Product", "Product Code", "Assembler ID", "Last assembled on"]}
+            keys={[]}
+            onRowClick={handleCellClick}
+            showActions={false}
+          />
+        </div>
       </div>
     </Layout>
   );

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '../components/ui/input';
-import RightArrow from '@/assets/icons/right-arrow.svg';
+import { ChevronRight } from "lucide-react";
 import Layout from './layout';
 import DataTable from '@/components/DataTable';
 import { Separator } from '@/components/ui/separator';
@@ -55,8 +55,10 @@ const newInstance = () => {
                 autoFocus={true}
                 onChange={(e) => setSerialNumber(e.target.value)}
               />
-              <Button className="bg-white hover:bg-white" type="submit">
-                <img src={RightArrow} alt="logo" className="cursor-pointer" width={50} height={50} />
+              <Button className="bg-blue-600 hover:bg-blue-500 rounded-md size-10" type='submit'>
+              <Button variant="ghost" size="icon">
+              <ChevronRight className="h-4 w-4" />
+              </Button>
               </Button>
             </div>
           </form>
