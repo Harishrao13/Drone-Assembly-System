@@ -20,8 +20,8 @@ export function Home() {
           <Label htmlFor="text" className="text-lg font-semibold">Enter Serial Number:</Label>
           <div className="flex flex-row items-center">
           <Input type="text" id="text" placeholder="PS22AM050001" className="h-12 text-lg bg-gray-200 mr-2" />
-          <Button variant="outline" size="icon">
-          <ChevronRight className="h-6 w-6" />
+          <Button variant="outline" size="icon" className="rounded-full p-1 bg-white border ">
+          <ChevronRight className="h-10 w-10 text-black" />
           </Button>
           </div>
         </div>

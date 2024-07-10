@@ -6,9 +6,10 @@ import { Product } from "@/types/Product";
 
 const AddInstance: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [archivedInstances, setArchivedInstances] = useState<Product[]>([]);
   const navigate = useNavigate();
 
-  const handleCellClick = async (product: Product) => {
+  const handleNewInstance = async (product: Product) => {
     try {
       const response = await fetch("http://localhost:5000/api/v1/initialize-instance", {
         method: "POST",
@@ -30,6 +31,10 @@ const AddInstance: React.FC = () => {
     }
   };
 
+  const handleCellClick = (archivedInstance: Product) => {
+    navigate(`/new-instance/${archivedInstance.productName}/${archivedInstance._id}`);
+  }
+
   const fetchProducts = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/v1/add-product");
@@ -40,32 +45,44 @@ const AddInstance: React.FC = () => {
     }
   };
 
+  const fetchArchivedInstances = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/archived-instances");
+      const data = await response.json();
+      console.log(data.archivedInstances);
+      setArchivedInstances(data.archivedInstances);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
   useEffect(() => {
     fetchProducts();
+    fetchArchivedInstances();
   }, []);
 
   return (
     <Layout>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full space-y-8">
         <h1 className="text-2xl font-bold">Select a drone to start a new instance!</h1>
         <div className="mt-5 w-full justify-center items-center">
           <ProductTable
             data={products}
             headers={["S.No", "Name of Product", "Product Code"]}
             keys={["productName", "productCode"]}
-            onRowClick={handleCellClick}
+            onRowClick={handleNewInstance}
             showActions={false}
           />
         </div>
         <div className="flex-col space-y-8">
-        <div className="text-4xl font-extrabold flex justify-center">OR</div>
-        <h1 className="text-2xl font-bold">Archived: Pick where you left</h1>
+        <div className="text-3xl font-extrabold flex justify-center">OR</div>
+        <h1 className="text-2xl font-bold">Archived: Pick where you left!</h1>
         </div>
         <div className="mt-5 w-full justify-center items-center">
           <ProductTable
-            data={products}
-            headers={["S.No", "Name of Product", "Product Code", "Assembler ID", "Last assembled on"]}
-            keys={[]}
+            data={archivedInstances}
+            headers={["S.No", "Name of Product","Last assembled on", "Assembler ID"]}
+            keys={["productName", "assembledOn"]}
             onRowClick={handleCellClick}
             showActions={false}
           />

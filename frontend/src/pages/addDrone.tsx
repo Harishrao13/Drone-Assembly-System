@@ -60,7 +60,6 @@ const addDrone = () => {
       if (response.status === 202) {
         fetchProducts();
       } else {
-        console.log(response.status)
         console.error("Error deleting product");
       }
     } catch (error) {
