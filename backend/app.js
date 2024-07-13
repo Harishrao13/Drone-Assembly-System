@@ -2,13 +2,13 @@ const express = require('express');
 const tasks = require('./api/routes/tasks');
 const cors = require('cors');
 require('dotenv').config();
-const connectDB = require('./db/connect');
+const mongoose = require('mongoose');
 const app = express();
 
 // CORS options
 const corsOpts = {
-  origin: '*',
-  methods: ['GET', 'POST','DELETE'],
+  origin: '*', // Adjust this in production to allow only trusted origins
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 };
 
@@ -24,19 +24,20 @@ app.get('/hello', (req, res) => {
   res.send("hello");
 });
 
-// Apply tasks routes
+// API routes
 app.use("/api/v1", tasks);
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB");
     app.listen(port, () => {
       console.log(`Server is listening on port ${port}...`);
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error connecting to MongoDB:", error);
   }
 };
 

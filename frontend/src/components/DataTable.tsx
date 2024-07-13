@@ -228,7 +228,7 @@ export default function DataTable() {
       </div>
       <div className="flex-1 text-sm text-muted-foreground space-x-2 py-4">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) assembled.
+        {table.getFilteredRowModel().rows.length} parts assembled.
       </div>
       <div>
       <CardFooter className="flex-center gap-10" >

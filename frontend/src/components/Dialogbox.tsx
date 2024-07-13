@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog"
 
 import{ DialogBoxProps } from '@/types/DialogBoxProps';
 
@@ -53,19 +52,37 @@ export function DialogBox({ defaultHolder, onItemAdded, handleSubmit, itemName }
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor={itemName === "Part" ? "quantity" : "code"} className="text-right">
-                  {itemName === "Part" ? "Quantity" : "Code"}
+                <Label className="text-right">
+                  Code
                 </Label>
                 <Input
-                  id={itemName === "Part" ? "quantity" : "code"}
-                  name={itemName === "Part" ? "quantity" : "code"}
-                  placeholder={itemName === "Part" ? "6" : "X"}
-                  type={itemName === "Part" ? "number" : "text"}
+                  id="code"
+                  name="code"
+                  placeholder="X"
+                  type="text"
                   className="col-span-3"
-                  value={itemName === "Part" ? formData.quantity : formData.code}
+                  value={formData.code}
                   onChange={handleChange}
                 />
               </div>
+              {
+                itemName === "Part" && (
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="quantity" className="text-right">
+                      Quantity
+                    </Label>
+                    <Input
+                      id="quantity"
+                      name="quantity"
+                      placeholder="1"
+                      type="number"
+                      className="col-span-3"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                    />
+                  </div>
+                )
+              }
             </div>
             <DialogFooter>
               <Button type="submit" className="bg-blue-700 hover:bg-blue-800">

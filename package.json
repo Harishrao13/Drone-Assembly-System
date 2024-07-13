@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@fontsource/roboto": "^5.0.13",
     "@headlessui/react": "^2.0.4"
   }
 }
