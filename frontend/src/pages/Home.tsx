@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
 import Layout from './layout';
+import RightArrow  from "@/assets/icons/right-arrow.svg"
 
 export function Home() {
   const navigate = useNavigate();
