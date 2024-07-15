@@ -155,7 +155,7 @@ const updateProgressCompleted = async (req, res) => {
         const {instanceId} = req.params;
         const updateProgess = await Instance.findOneAndUpdate( 
             { _id: instanceId }, 
-            { progress: 'completed', assembledOn: new Date() }, //TODO: Add assembledBy, droneID
+            { progress: 'completed', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }, //TODO: Add assembledBy, droneID
             { new: true, runValidators: true }
         );
         
@@ -177,7 +177,7 @@ const updateProgressArchived = async (req, res) => {
         const {instanceId} = req.params;
         const updateProgess = await Instance.findOneAndUpdate( 
             { _id: instanceId }, 
-            { progress: 'archived', assembledOn: new Date() },
+            { progress: 'archived', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) },
             { new: true, runValidators: true }
         );
         
@@ -198,16 +198,13 @@ const updateProgressArchived = async (req, res) => {
 const getAssembledCounts = async (req, res) => {
     const { instanceId } = req.params;
 
-    // Validate instanceId format
     if (!mongoose.Types.ObjectId.isValid(instanceId)) {
         return res.status(400).json({ msg: "Invalid instance ID format" });
     }
 
     try {
-        // Find the instance
         const instance = await Instance.findById(instanceId);
 
-        // Check if instance is found
         if (!instance) {
             return res.status(404).json({ msg: "Instance not found" });
         }
@@ -238,5 +235,45 @@ const getArchivedInstances = async (req, res) => {
     }
 }
 
-module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances };
+const trackInstance = async (req, res) => {
+    const { serialNumber } = req.body;
+    try{
+        const instance = await Instance.findOne({ "components.serialNumbers": serialNumber });
+        if(instance){
+            return res.status(200).json({ msg: "Instance found", _id: instance._id });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error tracking instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const getInstance = async (req, res) => {
+    const { instanceId } = req.params;
+    console.log(instanceId);
+
+    if (!mongoose.Types.ObjectId.isValid(instanceId)) {
+        return res.status(400).json({ msg: "Invalid instance ID format" });
+    }
+
+    try{
+        const instance = await Instance.findById(instanceId);
+        if(instance){
+            return res.status(200).json({ instance });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error fetching instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance };
 

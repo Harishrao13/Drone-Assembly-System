@@ -8,7 +8,7 @@ const { getAllTasks, createUser, findUser, } = require('../controllers/userTasks
 const { createProduct, displayProducts, deleteProducts, displayComponents, createComponent, deleteComponent, displayParts, createParts, deletePart } = require('../controllers/productTasks');
 
 //Instance tasks
-const { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances } = require('../controllers/instanceTasks');
+const { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance } = require('../controllers/instanceTasks');
 
 router.route('/').get(getAllTasks);
 
@@ -49,5 +49,9 @@ router.route('/instance/:productName/:instanceId/completed').patch(updateProgres
 router.route('/instance/:productName/:instanceId/archived').patch(updateProgressArchived)
 
 router.route('/archived-instances').get(getArchivedInstances)
+
+router.route('/track-instance').post(trackInstance)
+
+router.route('/track-instance/:instanceId').get(getInstance)
 
 module.exports = router;

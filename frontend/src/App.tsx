@@ -6,7 +6,7 @@ import {ChangePassword} from '@/pages/auth/Profile';
 import AddDrone from '@/pages/addDrone';
 import AddComponent from '@/pages/addComponent';
 import AddPart from '@/pages/addPart';
-import { Info } from './pages/info';
+import { TrackInstance } from './pages/trackInstance';
 import AddInstance from '@/pages/addInstance';
 import NewInstance from '@/pages/newInstance';
 import Dashboard from './components/Dashboard';
@@ -22,7 +22,7 @@ const App = () => {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/add-product' element={<AddDrone />} />
           <Route path='/add-employee' element={<AddEmployee />} />
-          <Route path='/info' element={<Info />} />
+          <Route path='/track-instance/:instanceId' element={<TrackInstance />} />
           <Route path='/add-product/:productName/components' element={<AddComponent />} /> 
           <Route path='/add-product/:productName/:componentLabel/parts' element={<AddPart />} />
           <Route path='/new-instance' element={<AddInstance />} />
