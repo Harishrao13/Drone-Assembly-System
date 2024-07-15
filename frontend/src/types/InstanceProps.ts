@@ -1,6 +1,9 @@
 export interface  InstanceProps {
     id: string;
+    _id:string;
     status: string;
-    componentName: string;
-    partName: string;
+    componentLabel: string;
+    partLabel: string;
+    assembledCounts: Record<string, number>;
+    partQuantity: number;
   }

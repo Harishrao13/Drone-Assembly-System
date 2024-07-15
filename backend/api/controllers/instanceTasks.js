@@ -20,7 +20,7 @@ const validateSerial = async (req, res) => {
 
     // Check if part code is valid from Product Database
     const partCode = match[1];
-    let partComponent;
+    let partComponent, partLabel, partQuantity;
 
     try {
         const product = await Product.findOne({ productName });
@@ -35,13 +35,12 @@ const validateSerial = async (req, res) => {
                 if (part.partCode === partCode) {
                     partFound = true;
                     partComponent = component.componentLabel;
+                    partLabel = part.partLabel;
+                    partQuantity = part.partQuantity;
                     break;
                 }
             }
-
-            if (partFound) {
-                break;
-            }
+            if (partFound) break;
         }
 
         if (!partFound) {
@@ -52,12 +51,22 @@ const validateSerial = async (req, res) => {
         return res.status(500).json({ msg: error.message || error });
     }
 
-    // Check if serial number is unique in Instance Database
     try {
+        const instance = await Instance.findOne({ _id: instanceId });
+        if (instance.progress === 'completed') {
+            return res.status(400).json({ msg: "Instance is already complete" });
+        }
+       
+        const component = instance.components.find(c => c.componentLabel === partComponent);
+        const currentAssembledCount = component.serialNumbers.length;
+        if (currentAssembledCount >= partQuantity) {
+            return res.status(400).json({ msg: "Unit limit reached for drone" });
+        }
+
         const isSerialNumberExists = await Instance.aggregate([
             { $unwind: "$components" },
-            { $unwind: "$components.SerialNumber" },
-            { $match: { "components.SerialNumber": serialNumber } },
+            { $unwind: "$components.serialNumbers" },
+            { $match: { "components.serialNumbers": serialNumber } },
             { $limit: 1 }
         ]);
 
@@ -73,7 +82,7 @@ const validateSerial = async (req, res) => {
     try {
         const updatedInstance = await Instance.findOneAndUpdate(
             { _id: instanceId, "components.componentLabel": partComponent },
-            { $push: { "components.$.SerialNumber": serialNumber } },
+            { $push: { "components.$.serialNumbers": serialNumber } },
             { new: true, runValidators: true }
         );
 
@@ -81,13 +90,19 @@ const validateSerial = async (req, res) => {
             return res.status(404).json({ msg: "Instance or component not found" });
         }
 
-        return res.status(200).json({ msg: "Serial number added to instance", instance: updatedInstance });
+        // Calculate the new assembled count after updating
+        const updatedComponent = updatedInstance.components.find(c => c.componentLabel === partComponent);
+        const newAssembledCount = updatedComponent.serialNumbers.length;
+
+        return res.status(200).json({ 
+            msg: "Serial number added to instance", 
+            partLabel, 
+            assembledCount: newAssembledCount 
+        });
     } catch (error) {
         console.error("Error updating instance:", error);
         return res.status(500).json({ msg: error.message || error });
     }
-
-    //TODO: Check units limit
 };
 
 const createNewInstance = async (req, res) => {
@@ -105,7 +120,7 @@ const createNewInstance = async (req, res) => {
 
         const components = product.components.map(component => ({
             componentLabel: component.componentLabel,
-            SerialNumber: []
+            serialNumbers: []
         }));
 
         const newInstance = new Instance({
@@ -123,4 +138,142 @@ const createNewInstance = async (req, res) => {
     }
 };
 
-module.exports = { validateSerial, createNewInstance };
+const deleteInstance = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        await Instance.deleteOne({ _id: instanceId });
+        res.status(202).json({ msg: "Instance deleted successfully" });
+
+    } catch (error){
+        console.error("Error deleting instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const updateProgressCompleted = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        const updateProgess = await Instance.findOneAndUpdate( 
+            { _id: instanceId }, 
+            { progress: 'completed', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }, //TODO: Add assembledBy, droneID
+            { new: true, runValidators: true }
+        );
+        
+        if(updateProgess){
+            res.status(200).json({ msg: "Instance completed successfully" });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error updating instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }f
+}
+
+const updateProgressArchived = async (req, res) => {
+    try{
+        const {instanceId} = req.params;
+        const updateProgess = await Instance.findOneAndUpdate( 
+            { _id: instanceId }, 
+            { progress: 'archived', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) },
+            { new: true, runValidators: true }
+        );
+        
+        if(updateProgess){
+            res.status(200).json({ msg: "Instance archived successfully" });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error updating instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+
+}
+
+const getAssembledCounts = async (req, res) => {
+    const { instanceId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(instanceId)) {
+        return res.status(400).json({ msg: "Invalid instance ID format" });
+    }
+
+    try {
+        const instance = await Instance.findById(instanceId);
+
+        if (!instance) {
+            return res.status(404).json({ msg: "Instance not found" });
+        }
+
+        const assembledCounts = {};
+
+        instance.components.forEach(component => {
+            const partLabel = component.componentLabel;
+            const assembledCount = component.serialNumbers.length;
+
+            assembledCounts[partLabel] = assembledCount;
+        });
+
+        return res.status(200).json({ assembledCounts });
+    } catch (error) {
+        console.error("Error fetching assembled counts:", error);
+        return res.status(500).json({ msg: error.message || "An error occurred while fetching assembled counts" });
+    }
+};
+
+const getArchivedInstances = async (req, res) => {
+    try {
+        const archivedInstances = await Instance.find({ progress: 'archived' });
+        res.status(200).json({ archivedInstances });
+    } catch (error) {
+        console.error("Error fetching archived instances:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const trackInstance = async (req, res) => {
+    const { serialNumber } = req.body;
+    try{
+        const instance = await Instance.findOne({ "components.serialNumbers": serialNumber });
+        if(instance){
+            return res.status(200).json({ msg: "Instance found", _id: instance._id });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error tracking instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+const getInstance = async (req, res) => {
+    const { instanceId } = req.params;
+    console.log(instanceId);
+
+    if (!mongoose.Types.ObjectId.isValid(instanceId)) {
+        return res.status(400).json({ msg: "Invalid instance ID format" });
+    }
+
+    try{
+        const instance = await Instance.findById(instanceId);
+        if(instance){
+            return res.status(200).json({ instance });
+        }
+        else{
+            res.status(404).json({ msg: "Instance not found" });
+        }
+    }
+    catch (error){
+        console.error("Error fetching instance:", error);
+        res.status(500).json({ msg: error.message || error });
+    }
+}
+
+module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance };
+

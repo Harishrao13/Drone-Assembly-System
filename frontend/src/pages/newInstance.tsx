@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-label';
@@ -8,34 +8,59 @@ import Layout from './layout';
 import DataTable from '@/components/DataTable';
 import { Separator } from '@/components/ui/separator';
 
-const newInstance = () => {
+const NewInstance = () => {
   const [serialNumber, setSerialNumber] = useState('');
-  const {productName, instanceId} = useParams();
+  const { productName, instanceId } = useParams();
+  const [partName, setPartName] = useState('');
+  const [assembledCounts, setAssembledCounts] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [dataTableKey, setDataTableKey] = useState(0);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(serialNumber);
+  useEffect(() => {
+    fetchAssembledCounts();
+  }, [productName, instanceId, partName]);
 
+  const fetchAssembledCounts = async () => {
+    console.log("fetching assembled counts")
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/new-instance/${productName}/${instanceId}`,{
+      const response = await fetch(`http://localhost:5000/api/v1/instance/${productName}/${instanceId}/assembled-counts`);
+      if (response.ok) { 
+        const data = await response.json();
+        setAssembledCounts(data.assembledCounts);
+        console.log("from newInstance",data.assembledCounts)
+        setLoading(false);
+        setDataTableKey(prevKey => prevKey + 1);
+      } else {
+        console.error('Error fetching assembled counts');
+      }
+    } catch (error) {
+      console.error('Error fetching assembled counts:', error);
+    }
+  };
+
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/v1/instance/${productName}/${instanceId}`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ serialNumber: serialNumber }),
       });
-      if(response.ok){
+      if (response.ok) {
         console.log('Serial number added successfully');
+        const data = await response.json();
+        setPartName(data.partLabel);
+        fetchAssembledCounts();
       } else {
         console.error('Error adding serial number');
       }
     } catch (error) {
       console.error('Error handling serial number:', error);
     }
-    
-
+    setSerialNumber('');
   };
-
 
   return (
     <Layout>
@@ -55,25 +80,22 @@ const newInstance = () => {
                 autoFocus={true}
                 onChange={(e) => setSerialNumber(e.target.value)}
               />
-              <Button className="bg-blue-600 hover:bg-blue-500 rounded-md size-10" type='submit'>
-              <Button variant="ghost" size="icon">
-              <ChevronRight className="h-4 w-4" />
-              </Button>
+              <Button type="submit" variant="outline" size="icon" className="rounded-full p-1 bg-white">
+                <ChevronRight className="h-10 w-10 text-black" />
               </Button>
             </div>
           </form>
         </div>
-      </div>
+    </div>
       <div>
-        <h1 className="text-green-800 font-bold">Status: 'Ready to Sky RS 2306' successfully scanned.</h1>
+        {partName && <h1 className="text-green-800 font-bold">Status: {partName} successfully scanned.</h1>}
       </div>
       <div className="w-full">
         <Separator />
-        <DataTable />
+        {!loading && <DataTable key={dataTableKey} assembledCounts={assembledCounts} />}
       </div>
-
     </Layout>
   );
 };
 
-export default newInstance;
+export default NewInstance;

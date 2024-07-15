@@ -8,7 +8,7 @@ const { getAllTasks, createUser, findUser, } = require('../controllers/userTasks
 const { createProduct, displayProducts, deleteProducts, displayComponents, createComponent, deleteComponent, displayParts, createParts, deletePart } = require('../controllers/productTasks');
 
 //Instance tasks
-const { validateSerial, createNewInstance } = require('../controllers/instanceTasks');
+const { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance } = require('../controllers/instanceTasks');
 
 router.route('/').get(getAllTasks);
 
@@ -36,8 +36,22 @@ router.route('/add-product/:productName/:componentLabel/:partLabel').delete(dele
 
 
 //Instance routes
-router.route('/new-instance/:productName/:instanceId').post(validateSerial)
-
 router.route('/initialize-instance').post(createNewInstance)
+
+router.route('/instance/:productName/:instanceId/assembled-counts').get(getAssembledCounts)
+
+router.route('/instance/:productName/:instanceId').post(validateSerial)
+
+router.route('/instance/:productName/:instanceId').delete(deleteInstance)
+
+router.route('/instance/:productName/:instanceId/completed').patch(updateProgressCompleted)
+
+router.route('/instance/:productName/:instanceId/archived').patch(updateProgressArchived)
+
+router.route('/archived-instances').get(getArchivedInstances)
+
+router.route('/track-instance').post(trackInstance)
+
+router.route('/track-instance/:instanceId').get(getInstance)
 
 module.exports = router;

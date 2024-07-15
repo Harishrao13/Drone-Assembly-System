@@ -8,7 +8,7 @@ const app = express();
 // CORS options
 const corsOpts = {
   origin: '*', // Adjust this in production to allow only trusted origins
-  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type'],
 };
 
