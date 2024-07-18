@@ -53,7 +53,7 @@ const validateSerial = async (req, res) => {
 
     try {
         const instance = await Instance.findOne({ _id: instanceId });
-        if (instance.progress === 'completed') {
+        if (instance.status === 'completed') {
             return res.status(400).json({ msg: "Instance is already complete" });
         }
        
@@ -125,7 +125,7 @@ const createNewInstance = async (req, res) => {
 
         const newInstance = new Instance({
             productName,
-            progress: 'in-progress',
+            status: 'archived',
             components
         });
 
@@ -151,33 +151,40 @@ const deleteInstance = async (req, res) => {
 }
 
 const updateProgressCompleted = async (req, res) => {
-    try{
-        const {instanceId} = req.params;
+    try {
+        const { instanceId } = req.params;
+        const assembledOnDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+        const assembledOn = new Date(assembledOnDate);
+        
         const updateProgess = await Instance.findOneAndUpdate( 
             { _id: instanceId }, 
-            { progress: 'completed', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) }, //TODO: Add assembledBy, droneID
+            { 
+                status: 'completed', 
+                assembledOn: assembledOn
+            }, 
             { new: true, runValidators: true }
         );
         
-        if(updateProgess){
+        if (updateProgess) {
             res.status(200).json({ msg: "Instance completed successfully" });
-        }
-        else{
+        } else {
             res.status(404).json({ msg: "Instance not found" });
         }
-    }
-    catch (error){
+    } catch (error) {
         console.error("Error updating instance:", error);
         res.status(500).json({ msg: error.message || error });
-    }f
+    }
 }
+
 
 const updateProgressArchived = async (req, res) => {
     try{
         const {instanceId} = req.params;
+        const assembledOnDate = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+        const assembledOn = new Date(assembledOnDate);
         const updateProgess = await Instance.findOneAndUpdate( 
             { _id: instanceId }, 
-            { progress: 'archived', assembledOn: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) },
+            { status: 'archived', assembledOn: assembledOn },
             { new: true, runValidators: true }
         );
         
@@ -227,7 +234,7 @@ const getAssembledCounts = async (req, res) => {
 
 const getArchivedInstances = async (req, res) => {
     try {
-        const archivedInstances = await Instance.find({ progress: 'archived' });
+        const archivedInstances = await Instance.find({ status: 'archived' });
         res.status(200).json({ archivedInstances });
     } catch (error) {
         console.error("Error fetching archived instances:", error);
@@ -275,5 +282,15 @@ const getInstance = async (req, res) => {
     }
 }
 
-module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance };
+const getLogs = async (req, res) => {
+    try {
+      const instances = await Instance.find({});
+      return res.status(200).json(instances);
+    } catch (error) {
+      console.error("Error fetching instances:", error);
+      return res.status(500).json({ msg: error.message || error });
+    }
+  };
+
+module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance, getLogs };
 

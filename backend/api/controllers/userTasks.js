@@ -1,8 +1,6 @@
-const User = require("../models/users");
-
-const getAllTasks = (req, res) => {
-  res.send("Hello from Controller!");
-};
+const User = require('../models/users');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {
   try {
@@ -13,29 +11,35 @@ const createUser = async (req, res) => {
   }
 };
 
-//find User by id
-const findUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
-    const { email } = req.body;
-    if (!email) {
-      return res.status(400).json({ msg: "Email parameter is missing" });
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: 'Please provide email and password' });
     }
 
-    const user = await User.findOne({ email: email });
-
+    const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      return res.status(404).json({ msg: 'User not found' });
     }
 
-    res.status(200).json({ user });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ msg: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ userId: user._id, isadmin: user.isadmin }, process.env.JWT_SECRET, {
+      expiresIn: '2h',
+    });
+
+    res.status(200).json({ token });
   } catch (error) {
-    console.error(`Error finding user: ${error.message}`);
-    res.status(500).json({ msg: "Internal Server Error" });
+    console.error(`Error logging in user: ${error.message}`);
+    res.status(500).json({ msg: 'Internal Server Error' });
   }
 };
 
 module.exports = {
-  getAllTasks,
   createUser,
-  findUser,
+  loginUser,
 };

@@ -11,11 +11,11 @@ const InstanceSchema = new Schema({
   productName: { type: String, required: false},
   assembledBy: { type: String, required: false},
   assembledOn: { type: Date, required: false},
-  progress: { 
+  status: { 
     type: String, 
-    enum: ['archived', 'in-progress', 'completed'], 
+    enum: ['archived', 'completed'], 
     required: true,
-    default: 'in-progress' 
+    default: 'archived' 
   },
   components: [componentSchema]
 });

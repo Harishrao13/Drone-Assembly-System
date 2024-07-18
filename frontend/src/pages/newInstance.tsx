@@ -7,6 +7,7 @@ import { ChevronRight } from "lucide-react";
 import Layout from './layout';
 import DataTable from '@/components/DataTable';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from "@/components/ui/use-toast"
 
 const NewInstance = () => {
   const [serialNumber, setSerialNumber] = useState('');
@@ -15,13 +16,13 @@ const NewInstance = () => {
   const [assembledCounts, setAssembledCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [dataTableKey, setDataTableKey] = useState(0);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchAssembledCounts();
   }, [productName, instanceId, partName]);
 
   const fetchAssembledCounts = async () => {
-    console.log("fetching assembled counts")
     try {
       const response = await fetch(`http://localhost:5000/api/v1/instance/${productName}/${instanceId}/assembled-counts`);
       if (response.ok) { 
@@ -31,14 +32,26 @@ const NewInstance = () => {
         setLoading(false);
         setDataTableKey(prevKey => prevKey + 1);
       } else {
+        const errorData = await response.json();
+        toast({
+          title: "Error",
+          description: errorData.msg || "Error fetching assembled counts",
+          variant: "destructive",
+        });
         console.error('Error fetching assembled counts');
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching assembled counts: ${error.message}`,
+        variant: "destructive",
+      });
       console.error('Error fetching assembled counts:', error);
     }
   };
 
-  const handleSubmit = async (e:any) => {
+  // validates and adds serial Number
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:5000/api/v1/instance/${productName}/${instanceId}`, {
@@ -49,18 +62,33 @@ const NewInstance = () => {
         body: JSON.stringify({ serialNumber: serialNumber }),
       });
       if (response.ok) {
-        console.log('Serial number added successfully');
         const data = await response.json();
         setPartName(data.partLabel);
         fetchAssembledCounts();
+        toast({
+          title: "Success",
+          description: `Successfully added serial number to  ${data.partLabel}`,
+          variant: "success",
+        });
       } else {
-        console.error('Error adding serial number');
+        const errorData = await response.json();
+        toast({
+          title: "Error",
+          description: errorData.msg || "Error adding serial number",
+          variant: "destructive",
+        });
+        console.error('Error adding serial number:', errorData.msg);
       }
-    } catch (error) {
-      console.error('Error handling serial number:', error);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error handling serial number: ${error.message}`,
+        variant: "destructive",
+      });
     }
     setSerialNumber('');
   };
+  
 
   return (
     <Layout>
@@ -86,7 +114,7 @@ const NewInstance = () => {
             </div>
           </form>
         </div>
-    </div>
+      </div>
       <div>
         {partName && <h1 className="text-green-800 font-bold">Status: {partName} successfully scanned.</h1>}
       </div>

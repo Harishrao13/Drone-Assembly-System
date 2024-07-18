@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductTable } from "@/components/ProductTable";
 import Layout from "./layout";
-import { Product } from "@/types/Product";
+interface Product {
+  productName: string;
+  productCode: string;
+  assembledOn: string;
+  _id: string;
+}
 
 const AddInstance: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

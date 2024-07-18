@@ -9,7 +9,7 @@ import AddPart from '@/pages/addPart';
 import { TrackInstance } from './pages/trackInstance';
 import AddInstance from '@/pages/addInstance';
 import NewInstance from '@/pages/newInstance';
-import Dashboard from './components/Dashboard';
+import  Dashboard from '@/pages/Dashboard';
 
 const App = () => {
   return (

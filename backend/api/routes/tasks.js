@@ -2,19 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 //User tasks
-const { getAllTasks, createUser, findUser, } = require('../controllers/userTasks');
+const { createUser, loginUser } = require('../controllers/userTasks');
+
 
 // Product tasks
 const { createProduct, displayProducts, deleteProducts, displayComponents, createComponent, deleteComponent, displayParts, createParts, deletePart } = require('../controllers/productTasks');
 
 //Instance tasks
-const { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance } = require('../controllers/instanceTasks');
+const { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance, getLogs } = require('../controllers/instanceTasks');
 
-router.route('/').get(getAllTasks);
+router.post('/register', createUser);
 
-router.route('/').post(createUser);``
-
-router.route('/find').post(findUser)
+router.post('/login', loginUser);
 
 router.route('/add-product').get(displayProducts)
 
@@ -53,5 +52,7 @@ router.route('/archived-instances').get(getArchivedInstances)
 router.route('/track-instance').post(trackInstance)
 
 router.route('/track-instance/:instanceId').get(getInstance)
+
+router.route('/logs').get(getLogs)
 
 module.exports = router;

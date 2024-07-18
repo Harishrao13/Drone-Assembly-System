@@ -22,6 +22,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useToast } from '@/components/ui/use-toast';
 
 interface DataTableProps {
   assembledCounts: Record<string, number>;
@@ -32,6 +33,7 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
   const [data, setData] = useState<InstanceProps[]>([]);
   const [allAssembled, setAllAssembled] = useState(true);
   const navigate = useNavigate(); 
+  const { toast } = useToast();
 
   useEffect(() => {
     setAllAssembled(data.every(row => row.assembledCounts[row.componentLabel] === row.partQuantity));
@@ -57,8 +59,12 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
       );
 
       setData(componentsWithParts.flat());
-    } catch (error) {
-      console.error('Error fetching components and parts:', error);
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: "Error",
+        description: `Error fetching components and parts: ${error.message}`,
+      })
     }
   };
 
@@ -72,13 +78,27 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
         method: 'PATCH',
       });
       if (response.ok) {
-        console.log('Instance submitted successfully');
+        toast({
+          variant: 'success',
+          title: "Success",
+          description: `Instance submitted successfully`,
+        })
+        toast({})
         navigate('/new-instance')
       } else {
-        console.error('Error submitting instance!');
+        const errorData = await response.json();
+        toast({
+          variant: 'destructive',
+          title: "Error",
+          description: `Error submitting instance: ${errorData.msg}`,
+        })
       }
-    } catch {
-      console.error('Error submitting instance');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error handling serial number: ${error.message}`,
+        variant: "destructive",
+      });
     }
   }
 
@@ -88,13 +108,25 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
         method: 'DELETE',
       });
       if (response.ok) {
-        console.log('Instance deleted successfully');
         navigate('/new-instance')
+        toast({
+          variant: 'success',
+          title: "Success",
+          description: `Instance deleted successfully`,
+        })
       } else {
-        console.error('Error deleting instance!');
+        toast({
+          variant: 'destructive',
+          title: "Error",
+          description: `Error deleting instance`,
+        })
       }
-    } catch {
-      console.error('Error deleting instance');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error handling serial number: ${error.message}`,
+        variant: "destructive",
+      });
     }
   }
 
@@ -269,16 +301,6 @@ const columns: ColumnDef<InstanceProps>[] = [
   },  
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
     cell: ({ row }) => {
       const componentLabel = row.getValue('componentLabel') as string;
       const assembled = row.original.assembledCounts[componentLabel] === row.getValue('partQuantity');

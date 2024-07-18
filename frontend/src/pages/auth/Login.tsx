@@ -12,8 +12,8 @@ import {
 
 export function Login() {
   const navigate = useNavigate();
-  const handleLogin = () => {
-    navigate('/home');
+  const handleLogin = async () => {
+    navigate('/home')
   }
 
   return (
@@ -30,7 +30,7 @@ export function Login() {
             <form className="flex flex-col gap-4 h-full">
               <div className="grid w-full gap-4">
                 <div className="flex flex-col space-y-1.5">
-                  <Input id="name" placeholder="Email"/>
+                  <Input id="email" placeholder="Email"/>
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Input id="password" placeholder="Password" type="password" />
