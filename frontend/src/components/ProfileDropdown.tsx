@@ -3,17 +3,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Profile from '@/assets/icons/profile.svg'
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
 
 const ProfileDropdown = () => {
- const [isMobile, setIsMobile] = useState(window.innerWidth <= 815);
- const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 815);
+  const navigate = useNavigate();
+  const signOut = useSignOut();
 
- const handleLogout = () => {
-   navigate('/');
- }
  const handlePassword = () => {
    navigate('/change-password');
+ }
+ const handleLogout = () => {
+    signOut();
+    navigate('/');
  }
 
    useEffect(() => {
@@ -36,7 +38,7 @@ const ProfileDropdown = () => {
      <DropdownMenuSeparator />
      <DropdownMenuItem>Profile</DropdownMenuItem>
      <DropdownMenuItem onClick={()=>{handlePassword()}}>Change Password</DropdownMenuItem>
-     <DropdownMenuItem onClick={()=>{handleLogout()}} className="text-red-600 hover:text-white font-bold ">Logout</DropdownMenuItem>
+     <DropdownMenuItem onClick={() =>{handleLogout()}} className="text-red-600 hover:text-white font-bold ">Logout</DropdownMenuItem>
    </DropdownMenuContent>
  </DropdownMenu>
    </div>
