@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductTable } from '@/components/ProductTable';
 import { DialogBox } from '@/components/Dialogbox';
-
+import { useToast } from "@/components/ui/use-toast"
 import { Product } from '@/types/Product';
 
 const addDrone = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleCellClick = (product: Product) => {
     navigate(`/add-product/${product.productName}/components`);
@@ -43,12 +44,29 @@ const addDrone = () => {
         body: JSON.stringify(newComponent),
       });
       if (response.ok) {
+        const data = await response.json();
         fetchProducts();
+        toast({
+          title: "Success",
+          description: `Successfully added serial number to  ${data.partLabel}`,
+          variant: "success",
+        });
       } else {
-        console.error("Error adding component");
+        const errorData = await response.json();
+        toast({
+          title: "Error",
+          description: errorData.msg || "Error adding component",
+          variant: "destructive",
+        });
+        
       }
-    } catch (error) {
-      console.error('Error adding component:', error);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error adding serial number: ${error.message}`,
+        variant: "destructive",
+      });
+      console.error('Error adding serial number:', error);
     }
   };
 

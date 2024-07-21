@@ -156,7 +156,6 @@ const displayComponents = async (req, res) => {
       );
 
       if (result.modifiedCount === 0) {
-        console.log("Part not found");
         return res.status(404).json({ msg: "Part not found" });
       }
 

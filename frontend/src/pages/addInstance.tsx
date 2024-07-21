@@ -54,7 +54,6 @@ const AddInstance: React.FC = () => {
     try {
       const response = await fetch("http://localhost:5000/api/v1/archived-instances");
       const data = await response.json();
-      console.log(data.archivedInstances);
       setArchivedInstances(data.archivedInstances);
     } catch (error) {
       console.error("Error fetching products:", error);
