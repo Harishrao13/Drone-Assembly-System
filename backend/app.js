@@ -1,19 +1,22 @@
 const express = require('express');
 const tasks = require('./api/routes/tasks');
+const authRoutes = require('./api/routes/authRoutes');
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 // CORS options
 const corsOpts = {
   origin: '*', // Adjust this in production to allow only trusted origins
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-// Apply CORS middleware
+// Apply middleware
 app.use(cors(corsOpts));
+app.use(cookieParser());
 
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
@@ -26,6 +29,7 @@ app.get('/hello', (req, res) => {
 
 // API routes
 app.use("/api/v1", tasks);
+app.use("/api/v1/auth", authRoutes);
 
 const port = process.env.PORT || 5000;
 

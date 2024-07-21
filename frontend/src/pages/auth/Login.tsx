@@ -54,7 +54,7 @@ export function Login() {
     <div className="login flex items-center justify-center h-screen">
       <Card className="p-6 w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Employee Login</CardTitle>
+          <CardTitle>Login</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-row items-center">
           <div className="logo-container flex-1 flex justify-center">

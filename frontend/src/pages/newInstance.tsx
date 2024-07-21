@@ -28,7 +28,6 @@ const NewInstance = () => {
       if (response.ok) { 
         const data = await response.json();
         setAssembledCounts(data.assembledCounts);
-        console.log("from newInstance",data.assembledCounts)
         setLoading(false);
         setDataTableKey(prevKey => prevKey + 1);
       } else {
@@ -38,7 +37,6 @@ const NewInstance = () => {
           description: errorData.msg || "Error fetching assembled counts",
           variant: "destructive",
         });
-        console.error('Error fetching assembled counts');
       }
     } catch (error: any) {
       toast({

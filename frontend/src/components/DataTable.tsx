@@ -130,7 +130,6 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
   }
 
   const handleArchive = async () => {
-    console.log('Archiving instance');
     try {
       const response = await fetch(`http://localhost:5000/api/v1/instance/${productName}/${instanceId}/archived`, {
         method: 'PATCH',
@@ -149,8 +148,6 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
           title: "Error",
           description: `Error archiving instance`,
         })
-        console.log(response.status)
-        console.error('Error archiving instance!');
       }
     } catch (error: any) {
       toast({

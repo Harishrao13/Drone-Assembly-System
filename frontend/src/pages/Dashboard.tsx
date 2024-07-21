@@ -56,14 +56,13 @@ const Dashboard = () => {
       const response = await fetch(`http://localhost:5000/api/v1/logs`);
       if (response.ok) {
         const logs = await response.json();
-
-        // Map the received data to the DashboardProps structure
         const formattedData = logs.map((log: any) => ({
           id: log._id,
           droneName: log.productName,
           status: log.status,
           assembler: log.assembledBy || "Unknown",
           date: log.assembledOn ? new Date(log.assembledOn).toLocaleDateString() : "N/A",
+          time: log.assembledOn ? new Date(log.assembledOn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "N/A",
         }));
 
         setData(formattedData);
@@ -99,6 +98,11 @@ const Dashboard = () => {
         </Button>
       ),
       cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
+    },
+    {
+      accessorKey: "time",
+      header: "Time",
+      cell: ({ row }) => <div className="lowercase">{row.getValue("time")}</div>,
     },
     {
       accessorKey: "droneName",

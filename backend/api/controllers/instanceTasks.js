@@ -44,7 +44,7 @@ const validateSerial = async (req, res) => {
         }
 
         if (!partFound) {
-            return res.status(404).json({ msg: "Part not found" });
+            return res.status(404).json({ msg: `This component is not part of ${productName}` });
         }
     } catch (error) {
         console.error("Error validating serial number:", error);
@@ -235,12 +235,24 @@ const getAssembledCounts = async (req, res) => {
 const getArchivedInstances = async (req, res) => {
     try {
         const archivedInstances = await Instance.find({ status: 'archived' });
-        res.status(200).json({ archivedInstances });
+
+        const archivedInstancesWithIST = archivedInstances.map(instance => {
+            const assembledOnUTC = new Date(instance.assembledOn);
+            const assembledOnIST = assembledOnUTC.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+
+            return {
+                ...instance.toObject(),
+                assembledOn: assembledOnIST
+            };
+        });
+
+        res.status(200).json({ archivedInstances: archivedInstancesWithIST });
     } catch (error) {
         console.error("Error fetching archived instances:", error);
         res.status(500).json({ msg: error.message || error });
     }
 }
+
 
 const trackInstance = async (req, res) => {
     const { serialNumber } = req.body;
@@ -261,7 +273,6 @@ const trackInstance = async (req, res) => {
 
 const getInstance = async (req, res) => {
     const { instanceId } = req.params;
-    console.log(instanceId);
 
     if (!mongoose.Types.ObjectId.isValid(instanceId)) {
         return res.status(400).json({ msg: "Invalid instance ID format" });
@@ -292,5 +303,36 @@ const getLogs = async (req, res) => {
     }
   };
 
-module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance, getLogs };
+  const reAssign = async (req, res) => {
+    const { instanceId } = req.params;
+    const { componentLabel } = req.body;
+
+    try {
+        const instance = await Instance.findOne({ _id: instanceId });
+
+        if (instance) {
+            if(instance.status === 'completed'){
+                return res.status(400).json({ msg: "Drone with this component is already assembled!" });
+            }
+            const component = instance.components.find(c => c.componentLabel === componentLabel);
+
+            if (component) {
+                component.serialNumbers = [];
+                await instance.save();
+
+                return res.status(200).json({ msg: "Serial numbers cleared successfully" });
+            } else {
+                return res.status(404).json({ msg: "Component not found" });
+            }
+        } else {
+            return res.status(404).json({ msg: "Instance not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: "An error occurred while processing the request" });
+    }
+};
+
+
+module.exports = { validateSerial, createNewInstance, deleteInstance, updateProgressCompleted, updateProgressArchived, getAssembledCounts, getArchivedInstances, trackInstance, getInstance, getLogs, reAssign };
 
