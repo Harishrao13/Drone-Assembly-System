@@ -15,6 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -47,6 +48,8 @@ const Dashboard = () => {
   const [data, setData] = useState<DashboardProps[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
 
   const fetchLogs = async () => {
     try {
@@ -67,7 +70,12 @@ const Dashboard = () => {
       } else {
         console.error('Error fetching logs');
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching logs: ${error.message}`,
+        variant: "destructive",
+      });
       console.error('Error fetching logs:', error);
     } finally {
       setLoading(false);

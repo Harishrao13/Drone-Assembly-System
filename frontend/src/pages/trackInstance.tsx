@@ -17,7 +17,12 @@ export function TrackInstance() {
                 const response = await fetch(`http://localhost:5000/api/v1/track-instance/${instanceId}`);
                 const result = await response.json();
                 setData(result.instance);
-            } catch (error) {
+            } catch (error: any) {
+                toast({
+                    title: "Error",
+                    description: `Error fetching part: ${error.message}`,
+                    variant: "destructive",
+                  });
                 console.error("Error fetching data:", error);
             }
         }

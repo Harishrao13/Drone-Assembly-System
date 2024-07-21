@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Layout from './layout';
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 export function Home() {
   const navigate = useNavigate();
   const [serialNumber, setSerialNumber] = useState('');
+  const { toast } = useToast();
+
 
   const handleInstance = () => {
     navigate('/new-instance');
@@ -29,18 +32,28 @@ export function Home() {
       if (instanceId) {
         navigate(`/track-instance/${instanceId}`);
       } else {
+        toast({
+          title: "Error",
+          description: result.msg || "ID not found",
+          variant: "destructive",
+        });
         console.error("No ID found in the response");
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching data: ${error.message}`,
+        variant: "destructive",
+      });
       console.error("Error fetching data:", error);
     }
   };
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    handleTrackComponent(serialNumber);
+    handleTrackComponent(serialNumber); 
   }
-
+  
   return (
     <Layout>
       <div className="home flex flex-col space-y-12">

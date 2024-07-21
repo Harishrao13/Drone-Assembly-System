@@ -4,17 +4,25 @@ import { ProductTable } from '@/components/ProductTable';
 import { DialogBox } from '@/components/Dialogbox';
 import { useParams } from 'react-router-dom';
 import { Part } from "@/types/Part";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddPart = () => {
   const [part, setPart] = useState<Part[]>([]);
   const { productName, componentLabel } = useParams<{ productName: string, componentLabel: string }>();
+  const { toast } = useToast();
+
 
   const fetchPart = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/v1/add-product/${productName}/${componentLabel}/parts`);
       const data = await response.json();
       setPart(data.parts);
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching part: ${error.message}`,
+        variant: "destructive",
+      });
       console.error('Error fetching part:', error);
     }
   };
@@ -49,9 +57,19 @@ const AddPart = () => {
       if (response.ok) {
         fetchPart();
       } else {
+        toast({
+          title: "Error",
+          description: data.msg || "Error adding part",
+          variant: "destructive",
+        });
         console.error('Error adding part');
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error adding part: ${error.message}`,
+        variant: "destructive",
+      });
       console.error('Error adding part:', error);
     }
   };
@@ -64,9 +82,20 @@ const AddPart = () => {
       if (response.status === 202) {
         fetchPart();
       } else {
+        const data = await response.json()
+        toast({
+          title: "Error",
+          description: data.msg || "Error adding part",
+          variant: "destructive",
+        });
         console.error('Error deleting part');
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error adding part: ${error.message}`,
+        variant: "destructive",
+      });
       console.error('Error deleting part:', error);
     }
   };

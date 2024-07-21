@@ -83,7 +83,6 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
           title: "Success",
           description: `Instance submitted successfully`,
         })
-        toast({})
         navigate('/new-instance')
       } else {
         const errorData = await response.json();
@@ -137,13 +136,28 @@ export const DataTable: React.FC<DataTableProps> = ({ assembledCounts }) => {
         method: 'PATCH',
       });
       if (response.ok) {
+        toast({
+          variant: 'success',
+          title: "Success",
+          description: `Instance archived successfully`,
+        })
         console.log('Instance archived successfully');
         navigate('/new-instance')
       } else {
+        toast({
+          variant: 'destructive',
+          title: "Error",
+          description: `Error archiving instance`,
+        })
         console.log(response.status)
         console.error('Error archiving instance!');
       }
-    } catch {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error archiving instance!`,
+        variant: "destructive",
+      });
       console.error('Error archiving instance!');
     }
   }

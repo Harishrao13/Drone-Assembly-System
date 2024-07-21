@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductTable } from "@/components/ProductTable";
 import Layout from "./layout";
+import { useToast } from "@/components/ui/use-toast";
+
 interface Product {
   productName: string;
   productCode: string;
@@ -13,6 +15,8 @@ const AddInstance: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [archivedInstances, setArchivedInstances] = useState<Product[]>([]);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
 
   const handleNewInstance = async (product: Product) => {
     try {
@@ -29,9 +33,19 @@ const AddInstance: React.FC = () => {
         const instanceId = data.instanceId;
         navigate(`/new-instance/${product.productName}/${instanceId}`);
       } else {
+        toast({
+          title: "Error",
+          description: data.msg || "Error initializing instance",
+          variant: "destructive",
+        });
         console.error("Error initializing instance:", data.msg);
       }
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error initializing instance: ${error.message}`,
+        variant: "destructive",
+      });
       console.error("Error initializing instance:", error);
     }
   };
@@ -45,7 +59,12 @@ const AddInstance: React.FC = () => {
       const response = await fetch("http://localhost:5000/api/v1/add-product");
       const data = await response.json();
       setProducts(data.products);
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching products: ${error.message}`,
+        variant: "destructive",
+      });
       console.error("Error fetching products:", error);
     }
   };
@@ -56,7 +75,12 @@ const AddInstance: React.FC = () => {
       const data = await response.json();
       console.log(data.archivedInstances);
       setArchivedInstances(data.archivedInstances);
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Error fetching products: ${error.message}`,
+        variant: "destructive",
+      });
       console.error("Error fetching products:", error);
     }
   }

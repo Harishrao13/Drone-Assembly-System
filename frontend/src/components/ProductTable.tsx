@@ -2,8 +2,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import Dots from "@/assets/icons/dots.svg";
 import { TableProps } from "@/types/TableProps";
+import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog"
+import React, { useState } from 'react'; 
 
 export function ProductTable<T>({ data = [], headers, keys, onRowClick, onEdit, onDelete, showActions = true}: TableProps<T>) {
+	const [isConfirmationOpen, setisConfirmationOpen] = useState(false);
+	const handleDeleteClick = () => {
+		setisConfirmationOpen(true);
+	  };
+	
+	  const handleCancelDelete = () => {
+		setisConfirmationOpen(false);
+	  };
+	  const handleConfirmDelete = () => {
+		setisConfirmationOpen(false);
+		console.log('Deleted!');
+	  };
 	return (
 		<div className="w-full bg-white rounded-lg overflow-x-auto">
 			<Table className="min-w-full border border-gray-300">
@@ -58,11 +72,34 @@ export function ProductTable<T>({ data = [], headers, keys, onRowClick, onEdit, 
 												<DropdownMenuItem
 													className="text-red-700 font-bold"
 													onClick={(e) => {
+														
 														e.stopPropagation();
 														onDelete && onDelete(item);
+														{isConfirmationOpen && (
+															<div className="confirmation-dialog">
+															  <p>Are you sure you want to delete?</p>
+															  <button onClick={handleCancelDelete}>Cancel</button>
+															  <button onClick={handleConfirmDelete}>Delete</button>
+															</div>
+														  )}
 													}}
 												>
-													Delete
+											  	<AlertDialog>
+                                                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                                                  <AlertDialogContent>
+                                                  <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                      This will delete the component and its information
+                                                    </AlertDialogDescription>
+                                                  </AlertDialogHeader>
+                                                  <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction>Continue</AlertDialogAction>
+                                                  </AlertDialogFooter>
+                                                  </AlertDialogContent>
+                                                </AlertDialog>
+                                                
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
