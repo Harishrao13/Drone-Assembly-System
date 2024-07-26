@@ -1,0 +1,200 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
+
+@layer base {
+  :root {
+    --font-poppins: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #faf8f5, #ffffff);
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer utilities {
+  .wrapper {
+    @apply max-w-5xl mx-auto px-5 md:px-10 w-full text-black font-normal p-16-regular;
+  }
+
+  .root {
+    @apply flex min-h-screen;
+  }
+
+  .root-container {
+    @apply flex flex-col flex-grow flex-center;
+  }
+
+  .gradient-text {
+    @apply bg-cover bg-clip-text text-transparent;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .h1-semibold {
+    @apply text-[36px] font-semibold sm:text-[44px] leading-[120%] sm:leading-[56px];
+  }
+
+  .h2-bold {
+    @apply text-[30px] font-bold md:text-[36px] leading-[110%];
+  }
+
+  .h3-bold {
+    @apply font-bold text-[30px] leading-[140%];
+  }
+
+  .p-24-bold {
+    @apply font-bold text-[24px] leading-[120%];
+  }
+
+  .p-20-semibold {
+    @apply font-semibold text-[20px] leading-[140%];
+  }
+
+  .p-20-regular {
+    @apply font-normal text-[20px] leading-[140%];
+  }
+
+  .p-18-semibold {
+    @apply font-semibold text-[18px] leading-[140%];
+  }
+
+  .p-16-semibold {
+    @apply font-semibold text-[16px] leading-[140%];
+  }
+
+  .p-16-medium {
+    @apply font-medium text-[16px] leading-[140%];
+  }
+
+  .p-16-regular {
+    @apply font-normal text-[16px] leading-[140%];
+  }
+
+  .p-14-medium {
+    @apply font-medium text-[14px] leading-[120%];
+  }
+
+  .p-10-medium {
+    @apply font-medium text-[10px] leading-[140%];
+  }
+
+  .flex-center {
+    @apply flex justify-center  items-center !important;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .btn-primary {
+    @apply bg-blue-800 text-white rounded-xl
+  }
+
+  .btn-primary:hover {
+    @apply bg-blue-600 !important;
+  }
+
+  .sidebar {
+    @apply h-screen max-w-72 bg-white shadow-md shadow-gray-200/50 lg:flex flex flex-col cursor-pointer p-18-semibold rounded-xl !important;
+
+  }
+
+  .sidebar-logo {
+    @apply flex items-center gap-2 md:py-2 flex-center mt-4 !important;
+  }
+
+  .sidebar-nav {
+    @apply h-full flex-col justify-between md:flex md:gap-4 !important;
+  }
+
+  .sidebar-nav_elements {
+    @apply hidden w-full flex-col items-start gap-6 md:flex !important;
+  }
+
+  .sidebar-nav_element {
+    @apply p-4 w-full flex items-center whitespace-nowrap rounded-full transition-all !important;
+  }
+
+  .sidebar-nav_element:hover {
+    @apply border-2 !important;
+  }
+
+  .sidebar-link {
+    @apply p-16-semibold flex size-full gap-4 p-4 !important;
+  }
+
+  /* Navbar Component */
+  .header {
+    @apply flex-between fixed h-16 w-full shadow-gray-200 shadow-sm bg-white p-5 lg:hidden !important;
+  }
+
+  .header-nav_elements {
+    @apply mt-8 flex w-full flex-col items-start gap-5;
+  }
+
+  .home {
+    @apply p-12 bg-white rounded-lg shadow-md w-full max-w-xl m-auto text-center flex flex-col;
+  }
+
+  .login {
+    @apply flex flex-col text-center flex-center h-screen;
+  }
+
+  .login-container {
+    @apply flex justify-center items-center w-full h-full text-center my-auto mx-auto flex-center;
+  }
+
+  .logo-container {
+    @apply mr-16;
+  }
+}
